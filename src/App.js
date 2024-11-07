@@ -1,11 +1,11 @@
 'use client';
-import './App.css';
-import MiddelBar from "./components/middelpar";
+import './styles/middlebar.css';
+import ListScreen from './components/ListScreen';
 
 function App() {
   return (
     <div className='app'>
-      <MiddelBar />
+      <ListScreen/>
     </div>
   );
 }

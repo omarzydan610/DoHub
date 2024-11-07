@@ -4,7 +4,7 @@ import UncompletedTask from './uncompletedtask';
 
 function MiddleBar() {
     return (
-        <div className="middelpar">
+        <div className="middle-bar">
             <div className="task-form-section">
                 <h2>Uncompleted Tasks</h2>
                 <form id="taskForm">
