@@ -1,9 +1,10 @@
-.middelpar {
-  width: 40%;
+.middle-bar {
+  height: 100vh;
+  width: 30%;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #eeeeee30;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
@@ -42,18 +43,18 @@ button#addTask:hover {
 .task-list {
   list-style-type: none;
   padding: 10px;
-  border: 2px solid #ccc;  /* Add border around the entire list */
+  border: 2px solid #ccc; /* Add border around the entire list */
   border-radius: 8px;
   margin: 0;
 }
 
 .task-list li {
-background-color: #fff;
-margin: 10px 0;
-padding: 10px;
-border-radius: 5px;
-box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-border: 1px solid #ddd;  /* Border for each task */
+  background-color: #fff;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd; /* Border for each task */
 }
 .scrollable {
   max-height: 255px;
@@ -61,5 +62,5 @@ border: 1px solid #ddd;  /* Border for each task */
   margin-bottom: 20px;
 }
 input[type="checkbox"] {
-    margin-right: 10px;
-  }
+  margin-right: 10px;
+}
