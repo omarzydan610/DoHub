@@ -1,14 +1,12 @@
 'use client';
 import './styles/middlebar.css';
-import ListScreen from './components/ListScreen';
-
+import Signup from './components/login-signup/signup.js'
 function App() {
   return (
-    <div className='app'>
-      <ListScreen/>
+    <div className="App">
+      <Signup />
     </div>
   );
 }
 
 export default App;
-
