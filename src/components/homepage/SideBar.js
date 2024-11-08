@@ -1,5 +1,6 @@
-import "../styles/SideBar.css"
-import Usr from "../images/User.png"
+import React from 'react';
+import "../../styles/SideBar.css"
+import Usr from "../../images/User.png"
 function SideBar(){
     return(
         <div className="side-bar">

@@ -1,6 +1,6 @@
 import React from 'react';
-import CompletedTask from './tasks/completedtask';
-import UncompletedTask from './tasks/uncompletedtask';
+import CompletedTask from '../tasks/completedtask';
+import UncompletedTask from '../tasks/uncompletedtask';
 
 function MiddleBar() {
     return (
