@@ -3,7 +3,7 @@ import "../../styles/SideBar.css"
 import Usr from "../../images/User.png"
 function SideBar(){
     return(
-        <div className="side-bar">
+        <div className="side-bar w-1/2">
             <div className="username-section">
                 <div className="name">UserName</div>
                 <div className="image"><img src={Usr} alt=""/></div>
