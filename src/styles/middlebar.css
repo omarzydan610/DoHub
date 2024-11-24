@@ -1,7 +1,6 @@
 .middle-bar {
   height: 100vh;
-  /* width: 30%; */
-  padding: 20px;
+  padding: 10px;
   background-color: #eeeeee30;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

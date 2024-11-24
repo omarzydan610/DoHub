@@ -5,7 +5,7 @@ import "../../styles/listScreen.css"
 import TaskEdit from './TaskEdit';
 function ListScreen(){
     return(
-        <div className="list-screen">
+        <div className="list-screen w-full">
             <SideBar className = "w-1/5"/>
             <MiddleBar className = "w-2/5"/>
             <TaskEdit className ="w-2/5"/>
