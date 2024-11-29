@@ -1,4 +1,4 @@
-.middle-bar {
+/* .middle-bar {
   height: 100vh;
   padding: 10px;
   background-color: #eeeeee30;
@@ -42,7 +42,7 @@ button#addTask:hover {
 .task-list {
   list-style-type: none;
   padding: 10px;
-  border: 2px solid #ccc; /* Add border around the entire list */
+  border: 2px solid #ccc; 
   border-radius: 8px;
   margin: 0;
 }
@@ -53,7 +53,7 @@ button#addTask:hover {
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ddd; /* Border for each task */
+  border: 1px solid #ddd; 
 }
 .scrollable {
   max-height: 255px;
@@ -62,4 +62,4 @@ button#addTask:hover {
 }
 input[type="checkbox"] {
   margin-right: 10px;
-}
+} */
