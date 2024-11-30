@@ -45,12 +45,12 @@ const SideBar = () => {
         } sm:translate-x-0`}
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+        <div className="h-full overflow-y-auto bg-gray-50 dark:bg-gray-800">
           <ul className="space-y-2 font-medium">
             <li>
               <a
-                href="login"
-                className="flex items-center p-2 text-white text-lg font-bold text-center rounded-lg bg-blue-500 dark:text-white hover:bg-blue-600 dark:hover:bg-gray-700 group"
+                href="/"
+                className="flex items-center py-2 px-1 text-white text-lg font-bold text-center bg-blue-500 dark:text-white hover:bg-blue-600 dark:hover:bg-gray-700 group"
               >
                 <span className="ms-3">UserName</span>
               </a>
