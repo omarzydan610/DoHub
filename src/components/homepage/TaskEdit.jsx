@@ -23,7 +23,7 @@ export default function TaskEdit() {
   };
 
   return (
-    <div className="mb-2   bg-white shadow-md rounded-md  w-2/5 mx-1 h-screen">
+    <div className="mb-2   bg-white shadow-md rounded-md hidden sm:block w-2/5 mx-1 h-screen">
       <div className="flex justify-between items-center  p-3 bg-blue-500 w-full mb-4">
         <h2 className="text-xl font-bold text-white">Task 3</h2>
         <div className="flex space-x-3">

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
-const SideBar = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
+const SideBar = ({ isSidebarOpen, setSidebarOpen }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -13,7 +12,7 @@ const SideBar = () => {
   };
 
   return (
-    <div className="side-bar w-1/5">
+    <div className="side-bar sm:w-1/5">
       {/* Sidebar Toggle Button */}
       <button
         onClick={toggleSidebar}
@@ -40,7 +39,7 @@ const SideBar = () => {
       {/* Sidebar */}
       <aside
         id="sidebar-multi-level-sidebar"
-        className={`fixed top-0 left-0 z-40 w-1/5 h-screen transition-transform ${
+        className={`fixed top-0 left-0 z-40 w-2/5 sm:w-1/5 h-screen transition-transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } sm:translate-x-0`}
         aria-label="Sidebar"
