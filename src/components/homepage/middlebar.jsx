@@ -37,7 +37,7 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
   };
 
   return (
-    <div className="relative w-screen sm:w-2/5">
+    <div className="relative w-screen ml:w-2/5">
       {/* Overlay */}
       {isSidebarOpen && (
         <div
@@ -76,7 +76,7 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
               id="addTask"
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 h-10"
             >
-              +Add
+              Add
             </button>
           </form>
         </div>

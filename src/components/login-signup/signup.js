@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import LoginRegisterService from "../../Service/Login-RegisterService";
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -7,15 +8,16 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
     alert("Signing up...");
-    // Handle signup logic here
-    console.log("Signing up with:", { firstName, secondName, email, password });
+    const userData = { firstName, secondName, email, password };
+    console.log("Signing up with:", userData);
+    const response = await LoginRegisterService.registerUser(userData);
   };
 
   return (

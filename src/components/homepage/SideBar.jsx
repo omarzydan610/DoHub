@@ -1,6 +1,12 @@
 import React, { useState } from "react";
+import LoginRegisterService from "../../Service/Login-RegisterService";
 
-const SideBar = ({ isSidebarOpen, setSidebarOpen }) => {
+const SideBar = ({
+  isSidebarOpen,
+  setSidebarOpen,
+  isDarkMode,
+  toggleDarkMode,
+}) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -10,15 +16,18 @@ const SideBar = ({ isSidebarOpen, setSidebarOpen }) => {
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
   };
+  const handleLogOut = async () => {
+    const response = await LoginRegisterService.logoutUser();
+  };
 
   return (
-    <div className="side-bar sm:w-1/5">
+    <div className="side-bar ml:w-1/5">
       {/* Sidebar Toggle Button */}
       <button
         onClick={toggleSidebar}
         aria-controls="sidebar-multi-level-sidebar"
         type="button"
-        className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg ml:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
       >
         <span className="sr-only">Open sidebar</span>
         <svg
@@ -39,9 +48,9 @@ const SideBar = ({ isSidebarOpen, setSidebarOpen }) => {
       {/* Sidebar */}
       <aside
         id="sidebar-multi-level-sidebar"
-        className={`fixed top-0 left-0 z-40 w-2/5 sm:w-1/5 h-screen transition-transform ${
+        className={`fixed top-0 left-0 z-40 w-2/5 ml:w-1/5 h-screen transition-transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } sm:translate-x-0`}
+        } ml:translate-x-0`}
         aria-label="Sidebar"
       >
         <div className="h-full overflow-y-auto bg-gray-50 dark:bg-gray-800">
@@ -116,6 +125,24 @@ const SideBar = ({ isSidebarOpen, setSidebarOpen }) => {
             <li>
               <a
                 href="/"
+                className="flex items-center justify-between p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
+                <span className="ms-3">Dark Mode</span>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="sr-only peer"
+                    checked={isDarkMode}
+                    onChange={toggleDarkMode}
+                  />
+                  <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:bg-blue-600"></div>
+                  <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform peer-checked:translate-x-5"></div>
+                </label>
+              </a>
+            </li>
+            <li>
+              <a
+                href="/"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -131,7 +158,7 @@ const SideBar = ({ isSidebarOpen, setSidebarOpen }) => {
             </li>
             <li>
               <a
-                href="/login"
+                onClick={handleLogOut}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg

@@ -1,14 +1,16 @@
 import React, { useState } from "react";
+import LoginRegisterService from "../../Service/Login-RegisterService";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     alert("Logging in...");
-    // Handle login logic here
-    console.log("Logging in with:", { email, password });
+    const credentials = { email, password };
+    console.log("Logging in with:", credentials);
+    const response = await LoginRegisterService.loginUser(credentials);
   };
 
   return (
