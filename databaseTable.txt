@@ -1,0 +1,45 @@
+Create database toDoApp;
+use toDoApp;
+
+-- Create the User table
+CREATE TABLE users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+-- Create the tag table
+CREATE TABLE tag (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Create the priority table
+CREATE TABLE priority (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Create the taskes table
+CREATE TABLE taskes (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    completed BOOLEAN DEFAULT FALSE,
+    user_id BIGINT NOT NULL,
+    due_date DATETIME,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    parent_id BIGINT,
+    priority_id BIGINT,
+    tag_id BIGINT,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (parent_id) REFERENCES taskes(id) ON DELETE SET NULL,
+    FOREIGN KEY (priority_id) REFERENCES priority(id) ON DELETE SET NULL,
+    FOREIGN KEY (tag_id) REFERENCES tag(id) ON DELETE SET NULL
+);
+
+
