@@ -13,6 +13,9 @@ const createUser = async (userData)=>{
         const [result] = await pool.query("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", [userData.name, userData.email, userData.password]);
         return result.insertId;
     }catch(error){
+        if(error.code === "ER_DUP_ENTRY"){
+            throw new Error("Email already exists");
+        }
         throw error;
     }
 }

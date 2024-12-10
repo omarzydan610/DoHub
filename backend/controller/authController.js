@@ -20,6 +20,9 @@ const registerController = async (req, res) => {
     const token = await authService.registerService(userData);
     return res.status(200).json({ message: "Register successful", token });
   } catch (error) {
+    if(error.message === "Email already exists"){
+        return res.status(400).json({ message: "Email already exists" });
+    }
     return res.status(500).json({ message: "Internal server error" });
   }
 };

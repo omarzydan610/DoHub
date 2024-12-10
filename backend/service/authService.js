@@ -33,6 +33,9 @@ const registerService = async (userData)=>{
         const token = createToken(userId);
         return token;
     }catch(error){
+        if(error.message === "Email already exists"){   
+            throw new Error("Email already exists");
+        }   
         throw error;
     }
 }
