@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.use(authRoutes);
 
-app.use("/api/tasks", taskRoutes);
+app.use("/tasks", taskRoutes);
 
 app.use(errorHandler);
 
