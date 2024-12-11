@@ -1,4 +1,4 @@
-const pool = require("../config/databaseManger");
+const pool = require("../config/databaseManager");
 
 const getUserByEmail = async (email)=>{
     try{
