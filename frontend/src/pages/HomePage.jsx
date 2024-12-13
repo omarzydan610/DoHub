@@ -1,9 +1,9 @@
 import { React, useState } from "react";
-import SideBar from "./SideBar";
-import MiddleBar from "./middlebar";
-import "../../styles/listScreen.css";
-import TaskEdit from "./TaskEdit";
-function ListScreen() {
+import SideBar from "../components/HomePageComponents/SideBar";
+import MiddleBar from "../components/HomePageComponents/middlebar";
+import "../styles/listScreen.css";
+import TaskEdit from "../components/HomePageComponents/TaskEdit";
+const HomePage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -26,5 +26,5 @@ function ListScreen() {
       <TaskEdit />
     </div>
   );
-}
-export default ListScreen;
+};
+export default HomePage;

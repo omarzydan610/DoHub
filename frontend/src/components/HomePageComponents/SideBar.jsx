@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import LoginRegisterService from "../../Service/Login-RegisterService";
+import { useAppContext } from "../../contexts/AppContext";
 
 const SideBar = ({
   isSidebarOpen,
@@ -7,6 +8,7 @@ const SideBar = ({
   isDarkMode,
   toggleDarkMode,
 }) => {
+  const { username } = useAppContext();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -17,7 +19,7 @@ const SideBar = ({
     setDropdownOpen((prev) => !prev);
   };
   const handleLogOut = async () => {
-    const response = await LoginRegisterService.logoutUser();
+    LoginRegisterService.logoutUser();
   };
 
   return (
@@ -56,12 +58,9 @@ const SideBar = ({
         <div className="h-full overflow-y-auto bg-gray-50 dark:bg-gray-800">
           <ul className="space-y-2 font-medium">
             <li>
-              <a
-                href="/"
-                className="flex items-center py-2 px-1 text-white text-lg font-bold text-center bg-blue-500 dark:text-white hover:bg-blue-600 dark:hover:bg-gray-700 group"
-              >
-                <span className="ms-3">UserName</span>
-              </a>
+              <button className="flex items-center py-2 text-white text-lg font-bold text-center bg-blue-500 dark:text-white hover:bg-blue-600 dark:hover:bg-gray-700 group w-full">
+                <span className=" w-full text-center">{username}</span>
+              </button>
             </li>
             <li>
               <button
@@ -97,36 +96,24 @@ const SideBar = ({
                 } py-2 space-y-2`}
               >
                 <li>
-                  <a
-                    href="/"
-                    className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                  >
+                  <button className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                     Tag1
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a
-                    href="/"
-                    className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                  >
+                  <button className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                     Tag2
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a
-                    href="/"
-                    className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                  >
+                  <button className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                     Tag3
-                  </a>
+                  </button>
                 </li>
               </ul>
             </li>
             <li>
-              <a
-                href="/"
-                className="flex items-center justify-between p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-              >
+              <button className="flex items-center justify-between p-2 w-full text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                 <span className="ms-3">Dark Mode</span>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
@@ -138,13 +125,10 @@ const SideBar = ({
                   <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:bg-blue-600"></div>
                   <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform peer-checked:translate-x-5"></div>
                 </label>
-              </a>
+              </button>
             </li>
             <li>
-              <a
-                href="/"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-              >
+              <button className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full">
                 <svg
                   className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                   xmlns="http://www.w3.org/2000/svg"
@@ -154,12 +138,12 @@ const SideBar = ({
                   <path d="M19 3H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.89 2 1.99 2h14c1.1 0 1.99-.9 1.99-2V5c0-1.1-.89-2-1.99-2zM5 5h14v2H5zm14 14H5V9h14v10z" />
                 </svg>
                 <span className="ms-3">Calendar</span>
-              </a>
+              </button>
             </li>
             <li>
-              <a
+              <button
                 onClick={handleLogOut}
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full"
               >
                 <svg
                   className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -184,7 +168,7 @@ const SideBar = ({
                   />
                 </svg>
                 <span className="ms-3">Sign Out</span>
-              </a>
+              </button>
             </li>
           </ul>
         </div>

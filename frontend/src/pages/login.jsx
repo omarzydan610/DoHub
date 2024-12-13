@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import LoginRegisterService from "../../Service/Login-RegisterService";
+import LoginRegisterService from "../Service/Login-RegisterService";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,9 +23,13 @@ const Login = () => {
       const response = await LoginRegisterService.loginUser(credentials);
 
       // Check if the response has the token
-      if (response && response.message==="Login successful" && response.token) {
+      if (
+        response &&
+        response.message === "Login successful" &&
+        response.token
+      ) {
         const token = response.token;
-        console.log("done")
+        console.log("done");
         // Store the token in local storage
         localStorage.setItem("x-access-token", token);
 
@@ -34,7 +38,6 @@ const Login = () => {
 
         // Redirect to the home page after successful login
         navigate("/");
-
       } else {
         // Handle case when no token is returned
         setError("Failed to log in. Please check your email and password.");
