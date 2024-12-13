@@ -7,6 +7,11 @@ const taskRoutes = require("./routes/tasksRoutes");
 
 app.use(express.json());
 
+app.use(cors({
+    origin: 'http://localhost:3000', // Frontend origin
+    methods: 'GET,POST,PUT,DELETE', // Allowed HTTP methods
+    allowedHeaders: 'Content-Type,Authorization', // Allowed headers
+  }));
 app.use(authRoutes);
 
 app.use("/tasks", taskRoutes);
