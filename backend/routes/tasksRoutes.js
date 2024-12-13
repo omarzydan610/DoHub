@@ -5,7 +5,8 @@ const { verifyToken } = require("../middlewares/authMiddlewares");
 const router = express.Router();
 
 router.post("/", verifyToken, TaskController.createTask);
-router.get("/user/:userId", verifyToken, TaskController.getAllTasks);
+router.get("/completed", verifyToken, TaskController.getCompletedTasks);
+router.get("/uncompleted", verifyToken, TaskController.getUncompletedTasks);
 router.get("/:taskId", verifyToken, TaskController.getTaskById);
 router.put("/:taskId", verifyToken, TaskController.updateTask);
 router.delete("/:taskId", verifyToken, TaskController.deleteTask);

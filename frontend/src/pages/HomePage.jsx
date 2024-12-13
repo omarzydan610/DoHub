@@ -1,11 +1,21 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import SideBar from "../components/HomePageComponents/SideBar";
 import MiddleBar from "../components/HomePageComponents/middlebar";
 import "../styles/listScreen.css";
 import TaskEdit from "../components/HomePageComponents/TaskEdit";
+import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const token = localStorage.getItem("x-access-token");
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (token === null) {
+      navigate("/login");
+    }
+  }, [token, navigate]);
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);

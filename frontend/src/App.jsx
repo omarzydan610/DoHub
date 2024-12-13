@@ -2,7 +2,7 @@ import "./styles/middlebar.css";
 import Login from "./pages/login";
 import React, { useEffect } from "react";
 import HomePage from "./pages/HomePage";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 import Signup from "./pages/signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./contexts/AuthContext";
