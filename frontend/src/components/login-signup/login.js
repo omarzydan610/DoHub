@@ -1,16 +1,50 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import LoginRegisterService from "../../Service/Login-RegisterService";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    alert("Logging in...");
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
     const credentials = { email, password };
-    console.log("Logging in with:", credentials);
-    const response = await LoginRegisterService.loginUser(credentials);
+
+    try {
+      // Make the API call to log in the user
+      const response = await LoginRegisterService.loginUser(credentials);
+
+      // Check if the response has the token
+      if (response && response.message==="Login successful" && response.token) {
+        const token = response.token;
+        console.log("done")
+        // Store the token in local storage
+        localStorage.setItem("x-access-token", token);
+
+        // Set success message
+        setSuccess("Logged in successfully!");
+
+        // Redirect to the home page after successful login
+        navigate("/");
+
+      } else {
+        // Handle case when no token is returned
+        setError("Failed to log in. Please check your email and password.");
+      }
+    } catch (error) {
+      setError("Failed to log in. Please check your email and password.");
+      console.error("Login error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -22,6 +56,8 @@ const Login = () => {
               Sign in to your account
             </h1>
             <form className="space-y-4 md:space-y-6" onSubmit={handleLogin}>
+              {error && <p className="text-red-500">{error}</p>}
+              {success && <p className="text-green-500">{success}</p>}
               <div>
                 <label
                   htmlFor="email"
@@ -60,14 +96,15 @@ const Login = () => {
               </div>
               <button
                 type="submit"
-                class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                disabled={loading}
               >
-                Sign in
+                {loading ? "Logging in..." : "Sign in"}
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{" "}
                 <a
-                  href="register"
+                  href="/register"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Sign up

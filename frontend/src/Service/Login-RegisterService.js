@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8080/api/shapes";
+const API_BASE_URL = "http://localhost:8081";
 
 class LoginRegisterService {
   // Login user
@@ -15,14 +15,15 @@ class LoginRegisterService {
   }
 
   // Register user
-  registerUser(userData) {
-    return axios
-      .post(`${API_BASE_URL}/register`, userData)
-      .then((response) => response.data)
-      .catch((error) => {
-        console.error("Error registering user:", error);
-        throw error;
-      });
+  async registerUser(userData) {
+    try {
+      const response = await axios
+        .post(`${API_BASE_URL}/register`, userData);
+      return response.data;
+    } catch (error) {
+      console.error("Error registering user:", error);
+      throw error;
+    }
   }
 
   // Optional: Logout user
