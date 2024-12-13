@@ -7,7 +7,9 @@ const taskRoutes = require("./routes/tasksRoutes");
 
 app.use(express.json());
 
+
 app.use(cors());
+
 
 app.use(authRoutes);
 

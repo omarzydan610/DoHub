@@ -3,7 +3,7 @@ const userDataAccess = require("../dataAccess/userDataAccess");
 const dotenv = require("dotenv");
 
 const verifyToken = async (req, res, next) => {
-  const token = req.headers["x-access-token"];
+  const token = req.headers["authorization"];
 
   console.log("line 7", token);
   if (!token) {
