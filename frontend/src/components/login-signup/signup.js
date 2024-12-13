@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import LoginRegisterService from "../../Service/Login-RegisterService";
+import { useAuth } from "../../contexts/AuthContext";
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -7,17 +9,50 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+      setError("Passwords do not match!");
       return;
     }
-    alert("Signing up...");
-    const userData = { firstName, secondName, email, password };
+
+    setLoading(true);
+    setError("");
+    setSuccess("");
+    let name = `${firstName} ${secondName}`;
+    const userData = { name, email, password };
     console.log("Signing up with:", userData);
-    const response = await LoginRegisterService.registerUser(userData);
+
+    try {
+      // Register the user
+      const registerResponse = await LoginRegisterService.registerUser(userData);
+      console.log("Registration successful:", registerResponse);
+
+      // Login the user immediately after registration
+      const loginResponse = await LoginRegisterService.loginUser({ email, password });
+      const token = loginResponse.token;
+      console.log("Login successful:", loginResponse);
+
+      // Store the token in local storage
+      localStorage.setItem("x-access-token", token);
+
+      // Set success message and navigate to home page
+      setSuccess("Signed up and logged in successfully!");
+      login(); // Update auth context
+      navigate("/");
+
+    } catch (error) {
+      console.error("Error during sign up and login process:", error);
+      setError("Failed to sign up and log in. Please check your details and try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -29,6 +64,8 @@ const SignUp = () => {
               Create your account
             </h1>
             <form className="space-y-4 md:space-y-6" onSubmit={handleSignUp}>
+              {error && <p className="text-red-500">{error}</p>}
+              {success && <p className="text-green-500">{success}</p>}
               <div>
                 <label
                   htmlFor="firstName"
@@ -122,13 +159,14 @@ const SignUp = () => {
               <button
                 type="submit"
                 className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                disabled={loading}
               >
-                Sign up
+                {loading ? "Signing up..." : "Sign up"}
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
                 <a
-                  href="login"
+                  href="/login"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Sign in
