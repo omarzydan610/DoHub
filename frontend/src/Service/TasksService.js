@@ -29,6 +29,21 @@ class TasksService {
     });
     return response.data;
   };
+
+  static updateTask = async (taskId, taskData) => {
+    console.log(taskData);
+    const response = await axios.put(
+      `${API_BASE_URL}/tasks/update/${taskId}`,
+      taskData,
+      {
+        headers: {
+          authorization: localStorage.getItem("x-access-token"),
+        },
+      }
+    );
+    console.log(response);
+    return response.data;
+  };
 }
 
 export default TasksService;

@@ -27,12 +27,6 @@ class LoginRegisterService {
       throw error;
     }
   };
-
-  // Optional: Logout user
-  static logoutUser() {
-    localStorage.removeItem("x-access-token");
-    window.location.href = "/login";
-  }
 }
 
 export default LoginRegisterService;

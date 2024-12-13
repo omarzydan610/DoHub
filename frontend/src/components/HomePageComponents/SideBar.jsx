@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import LoginRegisterService from "../../Service/Login-RegisterService";
 import { useAppContext } from "../../contexts/AppContext";
-
+import { useNavigate } from "react-router-dom";
 const SideBar = ({
   isSidebarOpen,
   setSidebarOpen,
@@ -18,8 +17,11 @@ const SideBar = ({
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
   };
-  const handleLogOut = async () => {
-    LoginRegisterService.logoutUser();
+
+  const navigate = useNavigate();
+  const handleLogOut = () => {
+    localStorage.removeItem("x-access-token");
+    navigate("/login");
   };
 
   return (

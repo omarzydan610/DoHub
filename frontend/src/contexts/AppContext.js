@@ -23,10 +23,15 @@ export const AppProvider = ({ children }) => {
     setUsername(response);
   };
 
-  useEffect(() => async () => {
-    await getUnCompletedTasks();
-    await getCompletedTasks();
-  }, [username]);
+  useEffect(
+    () => async () => {
+      if (localStorage.getItem("x-access-token")) {
+        await getUnCompletedTasks();
+        await getCompletedTasks();
+      }
+    },
+    [username]
+  );
 
   const contextValue = {
     username,

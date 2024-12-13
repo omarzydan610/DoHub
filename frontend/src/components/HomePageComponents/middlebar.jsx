@@ -7,27 +7,9 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
   const {
     uncompletedTasks,
     completedTasks,
-    setUncompletedTasks,
-    setCompletedTasks,
     getUnCompletedTasks,
     getCompletedTasks,
   } = useAppContext();
-
-  // const toggleCompletion = (id) => {
-  //   const task =
-  //     uncompletedTasks.find((task) => task.id === id) ||
-  //     completedTasks.find((task) => task.id === id);
-
-  //   task.completed = !task.completed;
-
-  //   if (task.completed) {
-  //     setUncompletedTasks(uncompletedTasks.filter((task) => task.id !== id));
-  //     setCompletedTasks([...completedTasks, task]);
-  //   } else {
-  //     setCompletedTasks(completedTasks.filter((task) => task.id !== id));
-  //     setUncompletedTasks([...uncompletedTasks, task]);
-  //   }
-  // };
 
   const handleAddTask = async (e) => {
     e.preventDefault();
@@ -35,8 +17,15 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
       title: newTaskName,
       dueDate: newTaskDate,
     };
-    const response = await TasksService.addTask(task);
+    await TasksService.addTask(task);
     await getUnCompletedTasks();
+  };
+
+  const handleToggleCompletion = async (task) => {
+    console.log("togle");
+    await TasksService.updateTask(task.id, { completed: !task.completed });
+    await getUnCompletedTasks();
+    await getCompletedTasks();
   };
 
   return (
@@ -111,7 +100,7 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
                   <input
                     type="checkbox"
                     checked={task.completed}
-                    // onChange={() => toggleCompletion(task.id)}
+                    onChange={() => handleToggleCompletion(task)}
                     className="form-checkbox h-5 w-5 text-blue-600"
                   />
                 </div>
@@ -130,13 +119,19 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
                 key={task.id}
                 className="flex items-center justify-between p-2 rounded-md border border-gray-300"
               >
-                <span>{task.name}</span>
+                <span>{task.title}</span>
                 <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-500">{task.date}</span>
+                  <span className="text-sm text-gray-500">
+                    {new Date(task.due_date).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </span>
                   <input
                     type="checkbox"
                     checked={task.completed}
-                    // onChange={() => toggleCompletion(task.id)}
+                    onChange={() => handleToggleCompletion(task)}
                     className="form-checkbox h-5 w-5 text-blue-600"
                   />
                 </div>

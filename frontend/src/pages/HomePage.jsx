@@ -21,6 +21,12 @@ const HomePage = () => {
     setIsDarkMode(!isDarkMode);
     // document.documentElement.classList.toggle("dark");
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("x-access-token") === null) {
+      navigate("/login");
+    }
+  }, [token, navigate]);
   return (
     <div className="list-screen w-full">
       <SideBar
