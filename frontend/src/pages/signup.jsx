@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LoginRegisterService from "../../Service/Login-RegisterService";
-import { useAuth } from "../../contexts/AuthContext";
+import LoginRegisterService from ".././Service/Login-RegisterService";
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -13,7 +12,6 @@ const SignUp = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
-  const { login } = useAuth();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -31,11 +29,16 @@ const SignUp = () => {
 
     try {
       // Register the user
-      const registerResponse = await LoginRegisterService.registerUser(userData);
+      const registerResponse = await LoginRegisterService.registerUser(
+        userData
+      );
       console.log("Registration successful:", registerResponse);
 
       // Login the user immediately after registration
-      const loginResponse = await LoginRegisterService.loginUser({ email, password });
+      const loginResponse = await LoginRegisterService.loginUser({
+        email,
+        password,
+      });
       const token = loginResponse.token;
       console.log("Login successful:", loginResponse);
 
@@ -43,13 +46,13 @@ const SignUp = () => {
       localStorage.setItem("x-access-token", token);
 
       // Set success message and navigate to home page
-      setSuccess("Signed up and logged in successfully!");
-      login(); // Update auth context
+      setSuccess("Signed u successfully!");
       navigate("/");
-
     } catch (error) {
-      console.error("Error during sign up and login process:", error);
-      setError("Failed to sign up and log in. Please check your details and try again.");
+      console.error("Error during sign up :", error);
+      setError(
+        "Failed to sign up. Please check your details and try again."
+      );
     } finally {
       setLoading(false);
     }

@@ -1,9 +1,15 @@
 const TasksRepository = require("../dataAccess/tasksDataAccess");
+const jwt = require("jsonwebtoken");
 
 class TaskController {
   static async createTask(req, res, next) {
+    const token = req.headers["authorization"];
     try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const userId = decoded.id;
+      req.body.userId = userId;
       const newTask = await TasksRepository.createTask(req.body);
+      console.log(newTask);
       res.status(201).json({
         status: "success",
         data: newTask,
@@ -13,15 +19,53 @@ class TaskController {
     }
   }
 
-  static async getAllTasks(req, res, next) {
+  static async getCompletedTasks(req, res, next) {
+    const token = req.headers["authorization"];
     try {
-      const { userId } = req.params;
-      const tasks = await TasksRepository.getAllTasks(userId);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const userId = decoded.id;
+      const tasks = await TasksRepository.getCompletedTasks(userId);
 
       res.status(200).json({
         status: "success",
         results: tasks.length,
         data: tasks,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getUncompletedTasks(req, res, next) {
+    const token = req.headers["authorization"];
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const userId = decoded.id;
+      const tasks = await TasksRepository.getUncompletedTasks(userId);
+
+      res.status(200).json({
+        status: "success",
+        results: tasks.length,
+        data: tasks,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateTask(req, res, next) {
+    const token = req.headers["authorization"];
+    const { taskId } = req.params;
+    console.log(req.body);
+
+    try {
+      jwt.verify(token, process.env.JWT_SECRET);
+      const updatedTask = await TasksRepository.updateTask(taskId, req.body);
+      console.log(updatedTask);
+
+      res.status(200).json({
+        status: "success",
+        data: updatedTask,
       });
     } catch (error) {
       next(error);
@@ -35,20 +79,6 @@ class TaskController {
       res.status(200).json({
         status: "success",
         data: task,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  static async updateTask(req, res, next) {
-    try {
-      const { taskId } = req.params;
-      const updatedTask = await TasksRepository.updateTask(taskId, req.body);
-
-      res.status(200).json({
-        status: "success",
-        data: updatedTask,
       });
     } catch (error) {
       next(error);
@@ -69,25 +99,13 @@ class TaskController {
     }
   }
 
-  static async getCompletedTasks(req, res, next) {
-    try {
-      const { userId } = req.params;
-      const tasks = await TasksRepository.getCompletedTasks(userId);
-
-      res.status(200).json({
-        status: "success",
-        results: tasks.length,
-        data: tasks,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-
   static async getTasksByPriority(req, res, next) {
     try {
       const { userId, priorityId } = req.params;
-      const tasks = await TasksRepository.getTasksByPriority(userId, priorityId);
+      const tasks = await TasksRepository.getTasksByPriority(
+        userId,
+        priorityId
+      );
 
       res.status(200).json({
         status: "success",

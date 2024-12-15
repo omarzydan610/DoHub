@@ -5,7 +5,7 @@ class TasksRepository {
   static async createTask(taskData) {
     const { title, description, userId, dueDate, parentId, priorityId, tagId } =
       taskData;
-
+    console.log(taskData);
     try {
       const [result] = await pool.execute(
         `INSERT INTO tasks 
@@ -14,7 +14,7 @@ class TasksRepository {
         [
           title ?? null,
           description ?? null,
-          userId,
+          userId ?? null,
           dueDate ?? null,
           parentId ?? null,
           priorityId ?? null,
@@ -119,7 +119,20 @@ class TasksRepository {
   static async getCompletedTasks(userId) {
     try {
       const [tasks] = await pool.execute(
-        "SELECT * FROM tasks WHERE user_id = ? AND completed = TRUE",
+        "SELECT * FROM tasks WHERE user_id = ? AND completed = TRUE ORDER BY due_date ASC",
+        [userId]
+      );
+
+      return tasks;
+    } catch (error) {
+      throw new AppError(error.message, 404);
+    }
+  }
+
+  static async getUncompletedTasks(userId) {
+    try {
+      const [tasks] = await pool.execute(
+        "SELECT * FROM tasks WHERE user_id = ? AND completed = FALSE ORDER BY due_date ASC",
         [userId]
       );
 

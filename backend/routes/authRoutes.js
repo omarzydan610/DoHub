@@ -5,6 +5,5 @@ const { validateLogin, validateRegister } = require("../middlewares/authValidati
 
 router.post("/login",   validateLogin, loginController);
 router.post("/register", validateRegister, registerController);
-// router.post("/logout", logoutController);
 
 module.exports = router;
