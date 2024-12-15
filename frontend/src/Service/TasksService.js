@@ -33,7 +33,7 @@ class TasksService {
   static updateTask = async (taskId, taskData) => {
     console.log(taskData);
     const response = await axios.put(
-      `${API_BASE_URL}/tasks/update/${taskId}`,
+      `${API_BASE_URL}/tasks/toggle/${taskId}`,
       taskData,
       {
         headers: {

@@ -53,6 +53,26 @@ class TaskController {
     }
   }
 
+  static async toggleCompleted(req, res, next) {
+    const { taskId } = req.params;
+    console.log(req.body);
+
+    try {
+      const updatedTask = await TasksRepository.toggleCompleted(
+        taskId,
+        req.body
+      );
+      console.log(updatedTask);
+
+      res.status(200).json({
+        status: "success",
+        data: updatedTask,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async updateTask(req, res, next) {
     const token = req.headers["authorization"];
     const { taskId } = req.params;
