@@ -100,6 +100,32 @@ class TasksRepository {
     }
   }
 
+  static async toggleCompleted(taskId, taskData) {
+    const { completed } = taskData;
+    try {
+      console.log(taskData);
+      const [result] = await pool.execute(
+        `UPDATE tasks 
+        SET completed = ?
+        WHERE id = ?`,
+        [completed, taskId]
+      );
+
+      if (result.affectedRows === 0) {
+        throw new AppError("No task found with that ID", 404);
+      }
+
+      const [updatedTask] = await pool.execute(
+        "SELECT * FROM tasks WHERE id = ?",
+        [taskId]
+      );
+
+      return updatedTask[0];
+    } catch (error) {
+      throw new AppError(error.message, 400);
+    }
+  }
+
   static async deleteTask(taskId) {
     try {
       const [result] = await pool.execute("DELETE FROM tasks WHERE id = ?", [

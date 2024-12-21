@@ -4,7 +4,7 @@ const { errorHandler } = require("./middlewares/errorHandler");
 const cors = require('cors')
 const authRoutes = require('./routes/authRoutes');
 const taskRoutes = require("./routes/tasksRoutes");
-
+const userRoutes = require("./routes/userRoutes");
 app.use(express.json());
 
 
@@ -12,7 +12,7 @@ app.use(cors());
 
 
 app.use(authRoutes);
-
+app.use("/user", userRoutes);
 app.use("/tasks", taskRoutes);
 
 app.use(errorHandler);

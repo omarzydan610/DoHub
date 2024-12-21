@@ -20,6 +20,7 @@ export const AppProvider = ({ children }) => {
 
   const getUsername = async (token) => {
     const response = await UserService.getUsername(token);
+    console.log(response);
     setUsername(response);
   };
 

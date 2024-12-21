@@ -60,8 +60,10 @@ const SideBar = ({
         <div className="h-full overflow-y-auto bg-gray-50 dark:bg-gray-800">
           <ul className="space-y-2 font-medium">
             <li>
-              <button className="flex items-center py-2 text-white text-lg font-bold text-center bg-blue-500 dark:text-white hover:bg-blue-600 dark:hover:bg-gray-700 group w-full">
-                <span className=" w-full text-center">{username}</span>
+              <button className="flex items-center py-3 text-white text-lg font-bold text-center bg-blue-500 dark:text-white hover:bg-blue-600 dark:hover:bg-gray-700 group w-full">
+                <span className=" w-full text-center text-xl">
+                  {username}
+                </span>
               </button>
             </li>
             <li>

@@ -41,7 +41,7 @@ const checkUser = async (id)=>{
         if(rows.length === 0){
             return false;
         }
-        return true;
+        return rows[0];
     }catch(error){
         throw error;
     }
