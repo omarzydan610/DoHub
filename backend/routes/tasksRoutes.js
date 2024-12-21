@@ -10,6 +10,6 @@ router.get("/uncompleted", verifyToken, TaskController.getUncompletedTasks);
 router.put("/update/:taskId", verifyToken, TaskController.updateTask);
 router.put("/toggle/:taskId", verifyToken, TaskController.toggleCompleted);
 router.get("/:taskId", verifyToken, TaskController.getTaskById);
-router.delete("/:taskId", verifyToken, TaskController.deleteTask);
+router.delete("/delete/:taskId", verifyToken, TaskController.deleteTask);
 
 module.exports = router;

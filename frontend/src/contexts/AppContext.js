@@ -8,9 +8,11 @@ export const AppProvider = ({ children }) => {
   const [uncompletedTasks, setUncompletedTasks] = useState([]);
 
   const [completedTasks, setCompletedTasks] = useState([]);
+  const [selectedTask, setSelectedTask] = useState(null);
 
   const getUnCompletedTasks = async () => {
     const response = await TasksService.getUncompletedTasks();
+    console.log(response.data);
     setUncompletedTasks(response.data);
   };
   const getCompletedTasks = async () => {
@@ -43,6 +45,8 @@ export const AppProvider = ({ children }) => {
     setCompletedTasks,
     getUnCompletedTasks,
     getCompletedTasks,
+    selectedTask,
+    setSelectedTask,
   };
 
   return (
