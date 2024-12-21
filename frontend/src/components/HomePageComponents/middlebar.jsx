@@ -9,6 +9,8 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
     completedTasks,
     getUnCompletedTasks,
     getCompletedTasks,
+    setSelectedTask,
+    selectedTask,
   } = useAppContext();
 
   const handleAddTask = async (e) => {
@@ -19,17 +21,33 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
     };
     await TasksService.addTask(task);
     await getUnCompletedTasks();
+    setNewTaskName("");
+    setNewTaskDate("");
   };
 
   const handleToggleCompletion = async (task) => {
+    if (selectedTask && selectedTask.id === task.id) {
+      setSelectedTask(task);
+    }
     console.log("togle");
-    await TasksService.updateTask(task.id, { completed: !task.completed });
+    await TasksService.toggleTask(task.id, { completed: !task.completed });
     await getUnCompletedTasks();
     await getCompletedTasks();
   };
+  const handleTaskClick = (task) => {
+    if (selectedTask && selectedTask.id === task.id) {
+      setSelectedTask(null);
+    } else {
+      setSelectedTask(task);
+    }
+  };
 
   return (
-    <div className="relative w-screen ml:w-2/5">
+    <div
+      className={`relative ${selectedTask ? "hidden ml:block" : "w-screen"} ${
+        selectedTask ? "ml:w-2/5" : "ml:w-4/5"
+      } bg-gray-50 border-l border-gray-300 h-screen`}
+    >
       {/* Overlay */}
       {isSidebarOpen && (
         <div
@@ -40,7 +58,7 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
 
       {/* Content */}
       <div
-        className={`middle-bar p-4 overflow-auto custom-scrollbar relative z-2 bg-white transition-all duration-300 ${
+        className={`middle-bar p-4 overflow-auto custom-scrollbar relative z-2 transition-all duration-300 ${
           isSidebarOpen ? "opacity-50" : "opacity-100"
         }`}
       >
@@ -85,8 +103,14 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
           ) : (
             uncompletedTasks.map((task) => (
               <div
+                style={{ userSelect: "none" }}
                 key={task.id}
-                className="flex items-center justify-between  p-2 rounded-md border border-gray-300"
+                onClick={() => handleTaskClick(task)}
+                className={`flex items-center justify-between p-2 rounded-md border ${
+                  selectedTask && selectedTask.id === task.id
+                    ? " border-blue-500"
+                    : " border-gray-300"
+                }`}
               >
                 <span>{task.title}</span>
                 <div className="flex items-center space-x-2">
@@ -116,8 +140,14 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
           ) : (
             completedTasks.map((task) => (
               <div
+                style={{ userSelect: "none" }}
                 key={task.id}
-                className="flex items-center justify-between p-2 rounded-md border border-gray-300"
+                onClick={() => handleTaskClick(task)}
+                className={`flex items-center justify-between p-2 rounded-md border ${
+                  selectedTask && selectedTask.id === task.id
+                    ? "border-blue-500"
+                    : " border-gray-300"
+                }`}
               >
                 <span>{task.title}</span>
                 <div className="flex items-center space-x-2">

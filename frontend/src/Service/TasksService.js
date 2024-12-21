@@ -30,7 +30,7 @@ class TasksService {
     return response.data;
   };
 
-  static updateTask = async (taskId, taskData) => {
+  static toggleTask = async (taskId, taskData) => {
     console.log(taskData);
     const response = await axios.put(
       `${API_BASE_URL}/tasks/toggle/${taskId}`,
@@ -42,6 +42,18 @@ class TasksService {
       }
     );
     console.log(response);
+    return response.data;
+  };
+
+  static deleteTask = async (taskId) => {
+    const response = await axios.delete(
+      `${API_BASE_URL}/tasks/delete/${taskId}`,
+      {
+        headers: {
+          authorization: localStorage.getItem("x-access-token"),
+        },
+      }
+    );
     return response.data;
   };
 }
