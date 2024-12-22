@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from "react";
-import SideBar from "../components/HomePageComponents/SideBar";
-import MiddleBar from "../components/HomePageComponents/middlebar";
+import SideBar from "../components/HomePageComponents/SideBarComponents/SideBar";
+import MiddleBar from "../components/HomePageComponents/TasksBar/MiddleBar";
 import "../styles/listScreen.css";
 import TaskEdit from "../components/HomePageComponents/TaskEdit";
 import { useNavigate } from "react-router-dom";
@@ -28,7 +28,7 @@ const HomePage = () => {
     }
   }, [token, navigate]);
   return (
-    <div className="list-screen w-full">
+    <div className="list-screen w-full bg-gray-50">
       <SideBar
         isSidebarOpen={isSidebarOpen}
         setSidebarOpen={setSidebarOpen}
