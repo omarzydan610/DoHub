@@ -16,6 +16,8 @@ export default function TaskEdit() {
     getUnCompletedTasks,
     getCompletedTasks,
     subtasks,
+    setSubtasks,
+    getSubTasks,
   } = useAppContext();
   const completedTasks = subtasks.filter((task) => task.completed).length;
   const totalTasks = subtasks.length;
@@ -29,12 +31,15 @@ export default function TaskEdit() {
   const [newTaskName, setNewTaskName] = useState(""); // State to hold the new task name
 
   // Toggle completion of a subtask
-  const toggleCompletion = (id) => {
-    // setSubtasks(
-    //   subtasks.map((task) =>
-    //     task.id === id ? { ...task, completed: !task.completed } : task
-    //   )
-    // );
+  const toggleCompletion = async (id) => {
+    const taskToToggle = subtasks.find((task) => task.id === id);
+
+    await TasksService.toggleTask(id, { completed: !taskToToggle.completed });
+    setSubtasks(
+      subtasks.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      )
+    );
   };
 
   const handleDeleteTask = () => {
@@ -78,6 +83,7 @@ export default function TaskEdit() {
         parentId: selectedTask.id,
       };
       await TasksService.addSubTask(newSubtask);
+      await getSubTasks(selectedTask.id)
     }
     setIsAddSubTaskModalOpen(false);
   };
