@@ -13,13 +13,15 @@ const Viewer = ({ content }) => {
       viewerInstance = toastui.Editor.factory({
         el: viewerRef.current,
         viewer: true,
-        initialValue: content || "No content available",
+        initialValue: content || "#### This task has no description\n***",
       });
     }
 
     // Update the content dynamically when `content` changes
     if (viewerInstance) {
-      viewerInstance.setMarkdown(content || "No content available");
+      viewerInstance.setMarkdown(
+        content || "#### This task has no description\n***"
+      );
     }
 
     // Cleanup the instance when the component unmounts
