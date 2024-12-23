@@ -1,8 +1,8 @@
 import { React, useState, useEffect } from "react";
-import SideBar from "../components/HomePageComponents/SideBarComponents/SideBar";
-import MiddleBar from "../components/HomePageComponents/TasksBar/MiddleBar";
+import SideBar from "../components/SideBar";
+import MiddleBar from "../components/MiddleBar";
 import "../styles/listScreen.css";
-import TaskEdit from "../components/HomePageComponents/TaskEdit";
+import TaskEdit from "../components/CurrentTask";
 import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);

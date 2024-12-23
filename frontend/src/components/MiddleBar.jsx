@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import TasksService from "../../../Service/TasksService";
-import { useAppContext } from "../../../contexts/AppContext";
-import AddTaskModal from "./AddTaskModal";
-import TaskList from "./TaskList";
+import TasksService from "../Service/TasksService";
+import { useAppContext } from "../contexts/AppContext";
+import AddTaskModal from "./MiddleBarComponents/AddTaskModal";
+import TaskList from "./MiddleBarComponents/TaskList";
 
 function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
   const [showModal, setShowModal] = useState(false);
@@ -10,7 +10,6 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
     title: "",
     dueDate: "",
     priority: "",
-    tags: "",
   });
   const {
     uncompletedTasks,
@@ -28,11 +27,10 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
       title: taskDetails.title,
       dueDate: taskDetails.dueDate,
       priority: taskDetails.priority,
-      tags: taskDetails.tags.split(",").map((tag) => tag.trim()),
     };
     await TasksService.addTask(task);
     await getUnCompletedTasks();
-    setTaskDetails({ title: "", dueDate: "", priority: "", tags: "" });
+    setTaskDetails({ title: "", dueDate: "", priority: "" });
     setShowModal(false);
   };
 
@@ -48,6 +46,8 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
   };
 
   const handleTaskClick = async (task) => {
+    console.log(task);
+
     if (selectedTask && selectedTask.id === task.id) {
       setSelectedTask(null);
     } else {
@@ -60,7 +60,7 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
     <div
       className={`relative ${selectedTask ? "hidden ml:block" : "w-screen"} ${
         selectedTask ? "ml:w-2/5" : "ml:w-4/5"
-      } bg-gray-50 border-l border-gray-300 min-h-screen max-h-fit`}
+      } bg-slate-50 min-h-screen max-h-fit shadow-lg`}
     >
       {/* Overlay for Sidebar */}
       {isSidebarOpen && (
@@ -79,17 +79,17 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
       />
 
       <div
-        className={`middle-bar p-4 overflow-auto custom-scrollbar relative z-10 transition-all duration-300 ${
+        className={`middle-bar p-6 overflow-auto custom-scrollbar relative z-10 transition-all duration-300 ${
           isSidebarOpen ? "opacity-50" : "opacity-100"
         }`}
       >
-        <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold">TODO</h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-gray-800">Tasks</h2>
           <button
             onClick={() => setShowModal(true)}
-            className="px-2 bg-transparent text-lg text-blue-500 rounded-full border font-bold border-blue-500 hover:bg-blue-500 hover:text-white"
+            className="w-10 h-10 flex items-center justify-center bg-blue-500 text-white rounded-full shadow-md hover:bg-blue-600 transition-colors duration-200"
           >
-            +
+            <span className="text-xl">+</span>
           </button>
         </div>
 

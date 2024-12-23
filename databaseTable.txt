@@ -1,4 +1,3 @@
-Create database toDoApp;
 use toDoApp;
 
 -- Create the User table
@@ -9,16 +8,22 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL
 );
 -- Create the tag table
-CREATE TABLE tag (
+CREATE TABLE tags (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    user_id BIGINT NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    name VARCHAR(255) NOT NULL
 );
 
+-- Create the task_tags table
+CREATE TABLE task_tags (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    task_id BIGINT NOT NULL,
+    tag_id BIGINT NOT NULL,
+    FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE,
+    FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
+);
 
--- Create the taskes table
-CREATE TABLE taskes (
+-- Create the tasks table
+CREATE TABLE tasks (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT,
@@ -28,10 +33,16 @@ CREATE TABLE taskes (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     parent_id BIGINT,
     priority BIGINT,
-    tag_id BIGINT,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (parent_id) REFERENCES taskes(id) ON DELETE SET NULL,
-    FOREIGN KEY (tag_id) REFERENCES tag(id) ON DELETE SET NULL
+    FOREIGN KEY (parent_id) REFERENCES tasks(id) ON DELETE SET NULL
 );
 
+select * from users;
+select * from tasks;
+select * from tags;
+select * from task_tags;
 
+drop table users;
+drop table tasks;
+drop table tags;
+drop table task_tags;
