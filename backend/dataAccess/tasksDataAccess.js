@@ -3,13 +3,13 @@ const { AppError } = require("../middlewares/errorHandler");
 
 class TasksRepository {
   static async createTask(taskData) {
-    const { title, description, userId, dueDate, parentId, priorityId, tagId } =
+    const { title, description, userId, dueDate, parentId, priority, tagId } =
       taskData;
     console.log(taskData);
     try {
       const [result] = await pool.execute(
         `INSERT INTO tasks 
-    (title, description, user_id, due_date, parent_id, priority_id, tag_id)
+    (title, description, user_id, due_date, parent_id, priority, tag_id)
     VALUES (?, ?, ?, ?, ?, ?, ?)`,
         [
           title ?? null,
@@ -17,7 +17,7 @@ class TasksRepository {
           userId ?? null,
           dueDate ?? null,
           parentId ?? null,
-          priorityId ?? null,
+          priority ?? 0,
           tagId ?? null,
         ]
       );
@@ -145,10 +145,9 @@ class TasksRepository {
   static async getCompletedTasks(userId) {
     try {
       const [tasks] = await pool.execute(
-        "SELECT * FROM tasks WHERE user_id = ? AND completed = TRUE ORDER BY due_date ASC",
+        "SELECT * FROM tasks WHERE user_id = ? AND completed = TRUE AND parent_id IS NULL ORDER BY due_date ASC",
         [userId]
       );
-
       return tasks;
     } catch (error) {
       throw new AppError(error.message, 404);
@@ -158,28 +157,39 @@ class TasksRepository {
   static async getUncompletedTasks(userId) {
     try {
       const [tasks] = await pool.execute(
-        "SELECT * FROM tasks WHERE user_id = ? AND completed = FALSE ORDER BY due_date ASC",
+        "SELECT * FROM tasks WHERE user_id = ? AND completed = FALSE AND parent_id IS NULL ORDER BY due_date ASC",
         [userId]
       );
-
       return tasks;
     } catch (error) {
       throw new AppError(error.message, 404);
     }
   }
 
-  static async getTasksByPriority(userId, priorityId) {
+  static async getSubTasks(parentId) {
     try {
       const [tasks] = await pool.execute(
-        "SELECT * FROM tasks WHERE user_id = ? AND priority_id = ?",
-        [userId, priorityId]
+        "SELECT * FROM tasks WHERE parent_id =?",
+        [parentId]
       );
-
       return tasks;
     } catch (error) {
       throw new AppError(error.message, 404);
     }
   }
+
+  // static async getTasksByPriority(userId, priorityId) {
+  //   try {
+  //     const [tasks] = await pool.execute(
+  //       "SELECT * FROM tasks WHERE user_id = ? AND priority_id = ?",
+  //       [userId, priorityId]
+  //     );
+
+  //     return tasks;
+  //   } catch (error) {
+  //     throw new AppError(error.message, 404);
+  //   }
+  // }
 
   static async getTasksByTag(userId, tagId) {
     try {

@@ -9,16 +9,31 @@ export const AppProvider = ({ children }) => {
 
   const [completedTasks, setCompletedTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
+  const [subtasks, setSubtasks] = useState([]);
 
   const getUnCompletedTasks = async () => {
     const response = await TasksService.getUncompletedTasks();
-    console.log(response.data);
     setUncompletedTasks(response.data);
   };
   const getCompletedTasks = async () => {
     const response = await TasksService.getCompletedTasks();
     setCompletedTasks(response.data);
   };
+
+  const getSubTasks = async (parendId) => {
+    const response = await TasksService.getSubTasks(parendId);
+    setSubtasks(response.data);
+  };
+
+  // useState(() => {
+  //   // const getTasks = async () => {
+  //   //   await getSubTasks();
+  //   // };
+  //   // if (selectedTask) {
+  //   //   getTasks();
+  //   // }
+  //   console.log("NEWWWWW");
+  // }, [selectedTask]);
 
   const getUsername = async (token) => {
     const response = await UserService.getUsername(token);
@@ -47,6 +62,9 @@ export const AppProvider = ({ children }) => {
     getCompletedTasks,
     selectedTask,
     setSelectedTask,
+    subtasks,
+    setSubtasks,
+    getSubTasks,
   };
 
   return (

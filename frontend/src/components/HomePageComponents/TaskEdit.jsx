@@ -8,18 +8,18 @@ import "@toast-ui/editor/dist/toastui-editor.css";
 
 export default function TaskEdit() {
   const editorRef = useRef();
-  const [subtasks, setSubtasks] = useState([]);
 
   // Calculate completion percentage based on subtasks
-  const completedTasks = subtasks.filter((task) => task.completed).length;
-  const totalTasks = subtasks.length;
-  const completionPercentage = (completedTasks / totalTasks) * 100;
   const {
     selectedTask,
     setSelectedTask,
     getUnCompletedTasks,
     getCompletedTasks,
+    subtasks,
   } = useAppContext();
+  const completedTasks = subtasks.filter((task) => task.completed).length;
+  const totalTasks = subtasks.length;
+  const completionPercentage = (completedTasks / totalTasks) * 100;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false); // State to track editing mode
@@ -30,11 +30,11 @@ export default function TaskEdit() {
 
   // Toggle completion of a subtask
   const toggleCompletion = (id) => {
-    setSubtasks(
-      subtasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
-    );
+    // setSubtasks(
+    //   subtasks.map((task) =>
+    //     task.id === id ? { ...task, completed: !task.completed } : task
+    //   )
+    // );
   };
 
   const handleDeleteTask = () => {
@@ -74,13 +74,10 @@ export default function TaskEdit() {
   const confirmAddSubTask = async () => {
     if (newSubtaskName) {
       const newSubtask = {
-        id: Date.now(),
         title: newSubtaskName,
-        completed: false,
+        parentId: selectedTask.id,
       };
-      setSubtasks([...subtasks, newSubtask]);
-      setNewSubtaskName("");
-      // await TasksService.addSubTask(newSubtask);
+      await TasksService.addSubTask(newSubtask);
     }
     setIsAddSubTaskModalOpen(false);
   };

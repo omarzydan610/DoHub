@@ -19,6 +19,7 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
     getCompletedTasks,
     setSelectedTask,
     selectedTask,
+    getSubTasks,
   } = useAppContext();
 
   const handleAddTask = async (e) => {
@@ -46,11 +47,12 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
     await getCompletedTasks();
   };
 
-  const handleTaskClick = (task) => {
+  const handleTaskClick = async (task) => {
     if (selectedTask && selectedTask.id === task.id) {
       setSelectedTask(null);
     } else {
       setSelectedTask(task);
+      await getSubTasks(task.id);
     }
   };
 

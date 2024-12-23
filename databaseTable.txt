@@ -16,13 +16,6 @@ CREATE TABLE tag (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Create the priority table
-CREATE TABLE priority (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    user_id BIGINT NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
 
 -- Create the taskes table
 CREATE TABLE taskes (
@@ -34,11 +27,10 @@ CREATE TABLE taskes (
     due_date DATETIME,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     parent_id BIGINT,
-    priority_id BIGINT,
+    priority BIGINT,
     tag_id BIGINT,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (parent_id) REFERENCES taskes(id) ON DELETE SET NULL,
-    FOREIGN KEY (priority_id) REFERENCES priority(id) ON DELETE SET NULL,
     FOREIGN KEY (tag_id) REFERENCES tag(id) ON DELETE SET NULL
 );
 
