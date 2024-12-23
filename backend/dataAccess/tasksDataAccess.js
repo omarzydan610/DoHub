@@ -148,10 +148,10 @@ class TasksRepository {
 
   static async deleteTask(taskId) {
     try {
-      const [result] = await pool.execute("DELETE FROM tasks WHERE id = ?", [
-        taskId,
-      ]);
-
+      const [result] = await pool.execute(
+        "DELETE FROM tasks WHERE id = ? OR parent_id = ?",
+        [taskId, taskId]
+      );
       if (result.affectedRows === 0) {
         throw new AppError("No task found with that ID", 404);
       }
