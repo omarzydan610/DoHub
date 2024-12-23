@@ -53,6 +53,25 @@ class TaskController {
     }
   }
 
+  static async getSubTasks(req, res, next) {
+    console.log("params", req.params);
+    const token = req.headers["authorization"];
+    try {
+      jwt.verify(token, process.env.JWT_SECRET);
+      const { parentId } = req.params;
+      console.log("parentId", parentId);
+
+      const tasks = await TasksRepository.getSubTasks(parentId);
+      res.status(200).json({
+        status: "success",
+        results: tasks.length,
+        data: tasks,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async toggleCompleted(req, res, next) {
     const { taskId } = req.params;
     console.log(req.body);
@@ -119,23 +138,23 @@ class TaskController {
     }
   }
 
-  static async getTasksByPriority(req, res, next) {
-    try {
-      const { userId, priorityId } = req.params;
-      const tasks = await TasksRepository.getTasksByPriority(
-        userId,
-        priorityId
-      );
+  // static async getTasksByPriority(req, res, next) {
+  //   try {
+  //     const { userId, priorityId } = req.params;
+  //     const tasks = await TasksRepository.getTasksByPriority(
+  //       userId,
+  //       priorityId
+  //     );
 
-      res.status(200).json({
-        status: "success",
-        results: tasks.length,
-        data: tasks,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
+  //     res.status(200).json({
+  //       status: "success",
+  //       results: tasks.length,
+  //       data: tasks,
+  //     });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // }
 
   static async getTasksByTag(req, res, next) {
     try {

@@ -7,9 +7,11 @@ const router = express.Router();
 router.post("/", verifyToken, TaskController.createTask);
 router.get("/completed", verifyToken, TaskController.getCompletedTasks);
 router.get("/uncompleted", verifyToken, TaskController.getUncompletedTasks);
-router.put("/update/:taskId", verifyToken, TaskController.updateTask);
 router.put("/toggle/:taskId", verifyToken, TaskController.toggleCompleted);
-router.get("/:taskId", verifyToken, TaskController.getTaskById);
 router.delete("/delete/:taskId", verifyToken, TaskController.deleteTask);
+router.get("/subTasks/:parentId", verifyToken, TaskController.getSubTasks);
+
+router.put("/update/:taskId", verifyToken, TaskController.updateTask);
+router.get("/:taskId", verifyToken, TaskController.getTaskById);
 
 module.exports = router;
