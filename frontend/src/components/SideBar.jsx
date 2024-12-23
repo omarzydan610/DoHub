@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useAppContext } from "../contexts/AppContext";
 import { useNavigate } from "react-router-dom";
-import SideBarToggleButton from "./HomePageComponents/SideBarComponents/SideBarToggleButton";
-import SideBarHeader from "./HomePageComponents/SideBarComponents/SideBarHeader";
-import SideBarButtons from "./HomePageComponents/SideBarComponents/SideBarButtons";
+import SideBarToggleButton from "./SideBarComponents/SideBarToggleButton";
+import SideBarHeader from "./SideBarComponents/SideBarHeader";
+import SideBarButtons from "./SideBarComponents/SideBarButtons";
 
 const SideBar = ({
   isSidebarOpen,

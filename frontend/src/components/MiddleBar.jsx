@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import TasksService from "../Service/TasksService";
 import { useAppContext } from "../contexts/AppContext";
-import AddTaskModal from "./HomePageComponents/MiddleBarComponents/AddTaskModal";
-import TaskList from "./HomePageComponents/MiddleBarComponents/TaskList";
+import AddTaskModal from "./MiddleBarComponents/AddTaskModal";
+import TaskList from "./MiddleBarComponents/TaskList";
 
 function MiddleBar({ isSidebarOpen, setSidebarOpen }) {
   const [showModal, setShowModal] = useState(false);

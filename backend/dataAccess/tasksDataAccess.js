@@ -91,24 +91,18 @@ class TasksRepository {
   }
 
   static async updateTask(taskId, taskData) {
+    console.log("data", taskData);
     const existingTask = await TasksRepository.getTaskById(taskId);
     taskData = { ...existingTask, ...taskData };
-    const {
-      title = null,
-      description = null,
-      completed = null,
-      dueDate = null,
-      priorityId = null,
-    } = taskData;
+    const { title = null, due_date = null, priority = null } = taskData;
 
     try {
       console.log(taskData);
       const [result] = await pool.execute(
         `UPDATE tasks 
-        SET title = ?, description = ?, completed = ?, 
-        due_date = ?, priority_id = ?
+        SET title = ?, due_date = ?, priority = ?
         WHERE id = ?`,
-        [title, description, completed, dueDate, priorityId, taskId]
+        [title, due_date, priority, taskId]
       );
 
       if (result.affectedRows === 0) {

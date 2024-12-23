@@ -33,7 +33,7 @@ const AddTaskModal = ({
             </div>
             <div>
               <input
-                type="date"
+                type="datetime-local"
                 value={taskDetails.dueDate}
                 onChange={(e) =>
                   setTaskDetails({ ...taskDetails, dueDate: e.target.value })

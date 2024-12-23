@@ -2,14 +2,14 @@ import React, { useState, useRef } from "react";
 import { useAppContext } from "../contexts/AppContext";
 import TasksService from "../Service/TasksService";
 
-import TaskHeader from "./HomePageComponents/TaskEditComponents/TaskHeader";
-import TaskMetadata from "./HomePageComponents/TaskEditComponents/TaskMetadata";
-import TaskDescription from "./HomePageComponents/TaskEditComponents/TaskDescription";
-import TaskProgress from "./HomePageComponents/TaskEditComponents/TaskProgress";
-import SubtaskList from "./HomePageComponents/TaskEditComponents/SubtaskList";
-import DeleteModal from "./HomePageComponents/TaskEditComponents/DeleteModal";
-import AddSubtaskModal from "./HomePageComponents/TaskEditComponents/AddSubtaskModal";
-import RenameTaskModal from "./HomePageComponents/TaskEditComponents/RenameTaskModal";
+import TaskHeader from "./CurrentTaskComponents/TaskHeader";
+import TaskMetadata from "./CurrentTaskComponents/TaskMetadata";
+import TaskDescription from "./CurrentTaskComponents/TaskDescription";
+import TaskProgress from "./CurrentTaskComponents/TaskProgress";
+import SubtaskList from "./CurrentTaskComponents/SubtaskList";
+import DeleteModal from "./CurrentTaskComponents/DeleteModal";
+import AddSubtaskModal from "./CurrentTaskComponents/AddSubtaskModal";
+import EditTaskInfoModal from "./CurrentTaskComponents/EditTaskInfoModal";
 
 import "react-quill/dist/quill.snow.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
@@ -35,8 +35,7 @@ export default function TaskEdit() {
   const [isEditing, setIsEditing] = useState(false); // State to track editing mode
   const [newSubtaskName, setNewSubtaskName] = useState(""); // State to hold the new subtask name
   const [isAddSubTaskModalOpen, setIsAddSubTaskModalOpen] = useState(false);
-  const [isRenameTaskModalOpen, setIsRenameTaskModalOpen] = useState(false); // State to track rename modal
-  const [newTaskName, setNewTaskName] = useState(""); // State to hold the new task name
+  const [isEditTaskInfoModalOpen, setIsEditTaskInfoModalOpen] = useState(false);
 
   // Toggle completion of a subtask
   const toggleCompletion = async (id) => {
@@ -102,22 +101,23 @@ export default function TaskEdit() {
     setIsAddSubTaskModalOpen(false);
     setNewSubtaskName("");
   };
-  const handleRenameTask = () => {
-    setNewTaskName(selectedTask.title);
-    setIsRenameTaskModalOpen(true);
+  const handleEditTaskInfo = () => {
+    setIsEditTaskInfoModalOpen(true);
   };
 
-  const confirmRenameTask = async () => {
-    if (newTaskName) {
-      setSelectedTask({ ...selectedTask, title: newTaskName });
-      // await TasksService.update(selectedTask.id, { title: newTaskName });
-    }
-    setIsRenameTaskModalOpen(false);
+  const confirmEditTaskInfo = async () => {
+    await TasksService.updateTask(selectedTask.id, {
+      title: selectedTask.title,
+      due_date: selectedTask.due_date,
+      priority: selectedTask.priority,
+    });
+    await getCompletedTasks();
+    await getUnCompletedTasks();
+    setIsEditTaskInfoModalOpen(false);
   };
 
-  const cancelRenameTask = () => {
-    setIsRenameTaskModalOpen(false);
-    setNewTaskName("");
+  const cancelEditTaskInfo = () => {
+    setIsEditTaskInfoModalOpen(false);
   };
 
   return (
@@ -129,7 +129,7 @@ export default function TaskEdit() {
     >
       <TaskHeader
         title={selectedTask?.title}
-        onRename={handleRenameTask}
+        onEdit={handleEditTaskInfo}
         onDelete={handleDeleteTask}
       />
 
@@ -144,13 +144,15 @@ export default function TaskEdit() {
         content={selectedTask?.description}
         onEditToggle={handleEditToggle}
       />
-
-      <button
-        className="text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200 flex w-full justify-end px-6 mb-4"
-        onClick={handleAddSubTask}
-      >
-        + Add Subtask
-      </button>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-semibold mb-6 px-6">Subtasks</h1>
+        <button
+          className="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200 flex w-full justify-end px-6 mb-4"
+          onClick={handleAddSubTask}
+        >
+          + Add Subtask
+        </button>
+      </div>
 
       {subtasks && subtasks.length > 0 && (
         <TaskProgress completionPercentage={completionPercentage} />
@@ -173,12 +175,12 @@ export default function TaskEdit() {
         onCancel={cancelAddSubTask}
       />
 
-      <RenameTaskModal
-        isOpen={isRenameTaskModalOpen}
-        newTaskName={newTaskName}
-        onNameChange={setNewTaskName}
-        onConfirm={confirmRenameTask}
-        onCancel={cancelRenameTask}
+      <EditTaskInfoModal
+        isOpen={isEditTaskInfoModalOpen}
+        task={selectedTask}
+        onTaskChange={setSelectedTask}
+        onConfirm={confirmEditTaskInfo}
+        onCancel={cancelEditTaskInfo}
       />
     </div>
   );

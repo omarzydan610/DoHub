@@ -125,18 +125,31 @@ class TaskController {
     }
   }
 
-  static async getTaskById(req, res, next) {
+  static async updateTask(req, res, next) {
+    const { taskId } = req.params;
     try {
-      const { taskId } = req.params;
-      const task = await TasksRepository.getTaskById(taskId);
+      const updatedTask = await TasksRepository.updateTask(taskId, req.body);
       res.status(200).json({
         status: "success",
-        data: task,
+        data: updatedTask,
       });
     } catch (error) {
       next(error);
     }
   }
+
+  // static async getTaskById(req, res, next) {
+  //   try {
+  //     const { taskId } = req.params;
+  //     const task = await TasksRepository.getTaskById(taskId);
+  //     res.status(200).json({
+  //       status: "success",
+  //       data: task,
+  //     });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // }
 
   // static async getTasksByTag(req, res, next) {
   //   try {

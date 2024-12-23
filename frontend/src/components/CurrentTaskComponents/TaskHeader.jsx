@@ -1,7 +1,7 @@
 import React from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-export default function TaskHeader({ title, onRename, onDelete }) {
+export default function TaskHeader({ title, onEdit, onDelete }) {
   return (
     <div className="flex justify-between items-center p-4 bg-gradient-to-r from-blue-600 to-blue-400 w-full mb-6">
       <h2 className="text-2xl font-semibold text-white tracking-wide">
@@ -10,7 +10,7 @@ export default function TaskHeader({ title, onRename, onDelete }) {
       <div className="flex space-x-4">
         <button
           className="text-white hover:text-blue-200 transition-colors duration-200"
-          onClick={onRename}
+          onClick={onEdit}
         >
           <FaEdit size={20} />
         </button>

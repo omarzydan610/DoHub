@@ -53,34 +53,22 @@ class TasksService {
 
   static toggleTask = async (taskId, taskData) => {
     console.log(taskData);
-    const response = await axios.put(
-      `${API_BASE_URL}/tasks/toggle/${taskId}`,
-      taskData,
-      {
-        headers: {
-          authorization: localStorage.getItem("x-access-token"),
-        },
-      }
-    );
-    console.log(response);
-    return response.data;
+    await axios.put(`${API_BASE_URL}/tasks/toggle/${taskId}`, taskData, {
+      headers: {
+        authorization: localStorage.getItem("x-access-token"),
+      },
+    });
   };
 
   static deleteTask = async (taskId) => {
-    const response = await axios.delete(
-      `${API_BASE_URL}/tasks/delete/${taskId}`,
-      {
-        headers: {
-          authorization: localStorage.getItem("x-access-token"),
-        },
-      }
-    );
-    return response.data;
+    await axios.delete(`${API_BASE_URL}/tasks/delete/${taskId}`, {
+      headers: {
+        authorization: localStorage.getItem("x-access-token"),
+      },
+    });
   };
 
   static editDescription = async (taskId, newDescription) => {
-    console.log("edit", newDescription);
-
     const response = await axios.put(
       `${API_BASE_URL}/tasks/description/${taskId}`,
       newDescription,
@@ -91,6 +79,13 @@ class TasksService {
       }
     );
     return response.data;
+  };
+  static updateTask = async (taskId, taskData) => {
+    await axios.put(`${API_BASE_URL}/tasks/update/${taskId}`, taskData, {
+      headers: {
+        authorization: localStorage.getItem("x-access-token"),
+      },
+    });
   };
 }
 
