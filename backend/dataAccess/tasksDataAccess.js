@@ -3,14 +3,14 @@ const { AppError } = require("../middlewares/errorHandler");
 
 class TasksRepository {
   static async createTask(taskData) {
-    const { title, description, userId, dueDate, parentId, priority, tagId } =
+    const { title, description, userId, dueDate, parentId, priority } =
       taskData;
     console.log(taskData);
     try {
       const [result] = await pool.execute(
         `INSERT INTO tasks 
-    (title, description, user_id, due_date, parent_id, priority, tag_id)
-    VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    (title, description, user_id, due_date, parent_id, priority)
+    VALUES (?, ?, ?, ?, ?, ?)`,
         [
           title ?? null,
           description ?? null,
@@ -18,7 +18,6 @@ class TasksRepository {
           dueDate ?? null,
           parentId ?? null,
           priority ?? 0,
-          tagId ?? null,
         ]
       );
 
@@ -63,6 +62,34 @@ class TasksRepository {
     }
   }
 
+  static async editDescription(taskId, newDescription) {
+    // const existingTask = await TasksRepository.getTaskById(taskId);
+    const { description = null } = newDescription;
+    console.log("new", description);
+
+    try {
+      const [result] = await pool.execute(
+        `UPDATE tasks 
+        SET  description = ?
+        WHERE id = ?`,
+        [description, taskId]
+      );
+
+      if (result.affectedRows === 0) {
+        throw new AppError("No task found with that ID", 404);
+      }
+
+      const [updatedTask] = await pool.execute(
+        "SELECT * FROM tasks WHERE id = ?",
+        [taskId]
+      );
+
+      return updatedTask[0];
+    } catch (error) {
+      throw new AppError(error.message, 400);
+    }
+  }
+
   static async updateTask(taskId, taskData) {
     const existingTask = await TasksRepository.getTaskById(taskId);
     taskData = { ...existingTask, ...taskData };
@@ -72,7 +99,6 @@ class TasksRepository {
       completed = null,
       dueDate = null,
       priorityId = null,
-      tagId = null,
     } = taskData;
 
     try {
@@ -80,9 +106,9 @@ class TasksRepository {
       const [result] = await pool.execute(
         `UPDATE tasks 
         SET title = ?, description = ?, completed = ?, 
-        due_date = ?, priority_id = ?, tag_id = ?
+        due_date = ?, priority_id = ?
         WHERE id = ?`,
-        [title, description, completed, dueDate, priorityId, tagId, taskId]
+        [title, description, completed, dueDate, priorityId, taskId]
       );
 
       if (result.affectedRows === 0) {
@@ -178,11 +204,11 @@ class TasksRepository {
     }
   }
 
-  // static async getTasksByPriority(userId, priorityId) {
+  // static async getTasksByTag(userId, tagId) {
   //   try {
   //     const [tasks] = await pool.execute(
-  //       "SELECT * FROM tasks WHERE user_id = ? AND priority_id = ?",
-  //       [userId, priorityId]
+  //       "SELECT * FROM tasks WHERE user_id = ? AND tag_id = ?",
+  //       [userId, tagId]
   //     );
 
   //     return tasks;
@@ -190,19 +216,6 @@ class TasksRepository {
   //     throw new AppError(error.message, 404);
   //   }
   // }
-
-  static async getTasksByTag(userId, tagId) {
-    try {
-      const [tasks] = await pool.execute(
-        "SELECT * FROM tasks WHERE user_id = ? AND tag_id = ?",
-        [userId, tagId]
-      );
-
-      return tasks;
-    } catch (error) {
-      throw new AppError(error.message, 404);
-    }
-  }
 }
 
 module.exports = TasksRepository;

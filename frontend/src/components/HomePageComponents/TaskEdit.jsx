@@ -2,7 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useAppContext } from "../../contexts/AppContext";
 import TasksService from "../../Service/TasksService";
-import { Editor, Viewer } from "@toast-ui/react-editor";
+import { Editor } from "@toast-ui/react-editor";
+import Viewer from "./Viewer";
+
 import "react-quill/dist/quill.snow.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 
@@ -62,13 +64,15 @@ export default function TaskEdit() {
   const handleEditToggle = async () => {
     if (isEditing) {
       const content = editorRef.current.getInstance().getMarkdown();
+      await TasksService.editDescription(selectedTask.id, {
+        description: content,
+      });
       if (selectedTask) {
         setSelectedTask({ ...selectedTask, description: content });
       }
     }
-    // if (isEditing) {
-    //   await TasksService.update(selectedTask.id);
-    // }
+    await getCompletedTasks();
+    await getUnCompletedTasks();
     setIsEditing(!isEditing);
     console.log(selectedTask.description);
   };
@@ -83,7 +87,7 @@ export default function TaskEdit() {
         parentId: selectedTask.id,
       };
       await TasksService.addSubTask(newSubtask);
-      await getSubTasks(selectedTask.id)
+      await getSubTasks(selectedTask.id);
     }
     setIsAddSubTaskModalOpen(false);
   };
@@ -157,26 +161,12 @@ export default function TaskEdit() {
             width="300px"
             useCommandShortcut={true}
             initialEditType="markdown"
-            readOnly={false} // Allow editing when in editing mode
           />
         </div>
       )}
       {!isEditing && (
         <div className="m-2">
-          <Viewer
-            ref={editorRef}
-            initialValue={
-              selectedTask && selectedTask.description
-                ? selectedTask.description
-                : "No Description"
-            }
-            previewStyle="vertical"
-            height="500px"
-            width="300px"
-            useCommandShortcut={true}
-            initialEditType="markdown"
-            readOnly={false} // Allow editing when in editing mode
-          />
+          <Viewer content={selectedTask ? selectedTask.description : "no"} />
         </div>
       )}
 

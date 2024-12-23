@@ -92,19 +92,33 @@ class TaskController {
     }
   }
 
-  static async updateTask(req, res, next) {
-    const token = req.headers["authorization"];
+  static async deleteTask(req, res, next) {
+    try {
+      const { taskId } = req.params;
+      await TasksRepository.deleteTask(taskId);
+
+      res.status(204).json({
+        status: "success",
+        data: null,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async editDescription(req, res, next) {
     const { taskId } = req.params;
-    console.log(req.body);
+    console.log("body", req.body);
 
     try {
-      jwt.verify(token, process.env.JWT_SECRET);
-      const updatedTask = await TasksRepository.updateTask(taskId, req.body);
-      console.log(updatedTask);
+      const editDescription = await TasksRepository.editDescription(
+        taskId,
+        req.body
+      );
 
       res.status(200).json({
         status: "success",
-        data: updatedTask,
+        data: editDescription,
       });
     } catch (error) {
       next(error);
@@ -124,27 +138,10 @@ class TaskController {
     }
   }
 
-  static async deleteTask(req, res, next) {
-    try {
-      const { taskId } = req.params;
-      await TasksRepository.deleteTask(taskId);
-
-      res.status(204).json({
-        status: "success",
-        data: null,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  // static async getTasksByPriority(req, res, next) {
+  // static async getTasksByTag(req, res, next) {
   //   try {
-  //     const { userId, priorityId } = req.params;
-  //     const tasks = await TasksRepository.getTasksByPriority(
-  //       userId,
-  //       priorityId
-  //     );
+  //     const { userId, tagId } = req.params;
+  //     const tasks = await TasksRepository.getTasksByTag(userId, tagId);
 
   //     res.status(200).json({
   //       status: "success",
@@ -155,21 +152,6 @@ class TaskController {
   //     next(error);
   //   }
   // }
-
-  static async getTasksByTag(req, res, next) {
-    try {
-      const { userId, tagId } = req.params;
-      const tasks = await TasksRepository.getTasksByTag(userId, tagId);
-
-      res.status(200).json({
-        status: "success",
-        results: tasks.length,
-        data: tasks,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
 }
 
 module.exports = TaskController;

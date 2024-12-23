@@ -77,6 +77,21 @@ class TasksService {
     );
     return response.data;
   };
+
+  static editDescription = async (taskId, newDescription) => {
+    console.log("edit", newDescription);
+
+    const response = await axios.put(
+      `${API_BASE_URL}/tasks/description/${taskId}`,
+      newDescription,
+      {
+        headers: {
+          authorization: localStorage.getItem("x-access-token"),
+        },
+      }
+    );
+    return response.data;
+  };
 }
 
 export default TasksService;

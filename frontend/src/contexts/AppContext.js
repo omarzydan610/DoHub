@@ -25,16 +25,6 @@ export const AppProvider = ({ children }) => {
     setSubtasks(response.data);
   };
 
-  // useState(() => {
-  //   // const getTasks = async () => {
-  //   //   await getSubTasks();
-  //   // };
-  //   // if (selectedTask) {
-  //   //   getTasks();
-  //   // }
-  //   console.log("NEWWWWW");
-  // }, [selectedTask]);
-
   const getUsername = async (token) => {
     const response = await UserService.getUsername(token);
     console.log(response);
