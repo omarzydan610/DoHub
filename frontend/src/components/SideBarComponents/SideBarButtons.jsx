@@ -8,13 +8,16 @@ const SideBarButtons = ({
   isDarkMode,
 }) => {
   const sidebarButtonClass =
-    "flex items-center w-full p-2 text-gray-700 rounded-lg dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 group transition-all duration-200";
+    "flex items-center w-full p-2 rounded-lg hover:bg-blue-50 transition-all duration-200 " +
+    (isDarkMode
+      ? "text-gray-200 bg-gray-800 hover:bg-gray-700"
+      : "text-gray-700 bg-white hover:bg-blue-50");
 
   return (
     <>
       <li className="px-3 py-2">
         <button className={sidebarButtonClass} aria-label="My List">
-          <FaList className="w-5 h-5 text-blue-500 dark:text-blue-400" />
+          <FaList className="w-5 h-5 text-blue-500" />
           <span className="ms-3 font-medium">My List</span>
         </button>
       </li>
@@ -53,7 +56,11 @@ const SideBarButtons = ({
         >
           {["Tag1", "Tag2", "Tag3"].map((tag) => (
             <li key={tag}>
-              <button className="flex w-full p-2 text-gray-600 dark:text-gray-300 rounded-lg pl-9 hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200">
+              <button
+                className={`flex w-full p-2 rounded-lg pl-9 hover:bg-blue-50 transition-all duration-200 ${
+                  isDarkMode ? "text-gray-300" : "dark:text-gray-600"
+                } `}
+              >
                 {tag}
               </button>
             </li>
@@ -62,7 +69,11 @@ const SideBarButtons = ({
       </li>
 
       <li className="px-3 py-2">
-        <div className="flex items-center justify-between p-2 text-gray-700 dark:text-gray-200 rounded-lg">
+        <div
+          className={`flex items-center justify-between p-2 rounded-lg ${
+            isDarkMode ? "bg-gray-800 text-gray-200" : "bg-white text-gray-700"
+          }`}
+        >
           <span className="font-medium">Dark Mode</span>
           <label className="relative inline-flex items-center cursor-pointer">
             <input
@@ -78,7 +89,7 @@ const SideBarButtons = ({
 
       <li className="px-3 py-2">
         <button className={sidebarButtonClass} aria-label="Calendar">
-          <FaCalendar className="w-5 h-5 text-blue-500 dark:text-blue-400" />
+          <FaCalendar className="w-5 h-5 text-blue-500" />
           <span className="ms-3 font-medium">Calendar</span>
         </button>
       </li>
@@ -86,7 +97,7 @@ const SideBarButtons = ({
       <li className="px-3 py-2 mt-auto">
         <button
           onClick={handleLogOut}
-          className="flex items-center w-full p-2 text-red-600 rounded-lg hover:bg-red-50 dark:text-red-400 dark:hover:bg-gray-700 group transition-all duration-200"
+          className="flex items-center w-full p-2 text-red-600 rounded-lg hover:bg-red-50 transition-all duration-200"
           aria-label="Sign Out"
         >
           <FaSignOutAlt className="w-5 h-5" />
@@ -96,4 +107,5 @@ const SideBarButtons = ({
     </>
   );
 };
+
 export default SideBarButtons;

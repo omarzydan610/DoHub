@@ -2,7 +2,7 @@ import { React, useState, useEffect } from "react";
 import SideBar from "../components/SideBar";
 import MiddleBar from "../components/MiddleBar";
 import "../styles/listScreen.css";
-import TaskEdit from "../components/CurrentTask";
+import CurrentTask from "../components/CurrentTask";
 import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -19,7 +19,6 @@ const HomePage = () => {
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
-    // document.documentElement.classList.toggle("dark");
   };
 
   useEffect(() => {
@@ -38,8 +37,9 @@ const HomePage = () => {
       <MiddleBar
         isSidebarOpen={isSidebarOpen}
         setSidebarOpen={setSidebarOpen}
+        isDarkMode={isDarkMode}
       />
-      <TaskEdit />
+      <CurrentTask isDarkMode={isDarkMode} />
     </div>
   );
 };

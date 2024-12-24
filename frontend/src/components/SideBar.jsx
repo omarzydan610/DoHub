@@ -34,11 +34,14 @@ const SideBar = ({
   };
 
   return (
-    <div className="side-bar ml:w-64">
+    <div
+      className={`side-bar ml:w-64 ${isDarkMode ? "bg-gray-800" : "bg-white"}`}
+    >
       <SideBarToggleButton
         toggleSidebar={toggleSidebar}
         backToHome={backToHome}
         selectedTask={selectedTask}
+        isDarkMode={isDarkMode}
       />
       <aside
         id="sidebar-multi-level-sidebar"
@@ -47,9 +50,13 @@ const SideBar = ({
         } ml:translate-x-0`}
         aria-label="Sidebar"
       >
-        <div className="h-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+        <div
+          className={`h-full border-r border-gray-200 dark:border-gray-700 ${
+            isDarkMode ? "bg-gray-800" : "bg-white"
+          }`}
+        >
           <ul className="h-full flex flex-col">
-            <SideBarHeader username={username} />
+            <SideBarHeader username={username} isDarkMode={isDarkMode} />
             <div className="flex-1 py-4">
               <SideBarButtons
                 toggleDropdown={toggleDropdown}

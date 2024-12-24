@@ -1,14 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import * as toastui from "@toast-ui/editor"; // Ensure toastui is installed
-import "@toast-ui/editor/dist/toastui-editor.css"; // Import the necessary styles
+import "@toast-ui/editor/dist/toastui-editor.css"; // Default Toast UI styles
+import "./toastui-custom-theme.css"; // Import your custom theme
 
-const Viewer = ({ content }) => {
+const Viewer = ({ content, isDarkMode }) => {
   const viewerRef = useRef();
 
   useEffect(() => {
     let viewerInstance;
 
-    // Initialize the viewer when the component mounts
     if (viewerRef.current) {
       viewerInstance = toastui.Editor.factory({
         el: viewerRef.current,
@@ -17,22 +17,27 @@ const Viewer = ({ content }) => {
       });
     }
 
-    // Update the content dynamically when `content` changes
     if (viewerInstance) {
       viewerInstance.setMarkdown(
         content || "#### This task has no description\n***"
       );
     }
 
-    // Cleanup the instance when the component unmounts
     return () => {
       if (viewerInstance) {
         viewerInstance.destroy();
       }
     };
-  }, [content]); // Re-run if `content` changes
+  }, [content]);
 
-  return <div ref={viewerRef} className="toastui-viewer" />;
+  return (
+    <div
+      ref={viewerRef}
+      className={`toastui-viewer ${
+        isDarkMode ? "toastui-editor-dark-mode" : ""
+      }`}
+    />
+  );
 };
 
 export default Viewer;
