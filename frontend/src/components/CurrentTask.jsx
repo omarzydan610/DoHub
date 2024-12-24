@@ -128,9 +128,9 @@ export default function CurrentTask({ isDarkMode }) {
 
   return (
     <div
-      className={`${isDarkMode ? "bg-gray-900" : "bg-gray-50"} shadow-lg ${
-        selectedTask ? "block" : "hidden"
-      }
+      className={`overflow-y-scroll ${
+        isDarkMode ? "bg-gray-900" : "bg-gray-50"
+      } shadow-lg ${selectedTask ? "block" : "hidden"}
       ml:w-2/5 ${selectedTask ? "w-screen" : "hidden"} border-l ${
         isDarkMode ? "border-gray-700" : "border-gray-200"
       } h-screen`}

@@ -29,7 +29,7 @@ const HomePage = () => {
   }, [token, navigate]);
   return (
     <div
-      className={`list-screen w-full flex ${
+      className={`list-screen h-full w-full overflow-y-hidden flex ${
         isDarkMode ? "bg-gray-700" : "bg-gray-50"
       }`}
     >

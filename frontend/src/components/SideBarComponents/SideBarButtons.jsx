@@ -1,4 +1,5 @@
 import { FaList, FaCalendar, FaSignOutAlt } from "react-icons/fa";
+import { useAppContext } from "../../contexts/AppContext";
 
 const SideBarButtons = ({
   toggleDropdown,
@@ -12,9 +13,10 @@ const SideBarButtons = ({
     (isDarkMode
       ? "text-gray-200 bg-gray-800 hover:bg-gray-700"
       : "text-gray-700 bg-white hover:bg-blue-50");
+  const { userTags } = useAppContext();
 
   return (
-    <>
+    <div>
       <li className="px-3 py-2">
         <button className={sidebarButtonClass} aria-label="My List">
           <FaList className="w-5 h-5 text-blue-500" />
@@ -52,19 +54,27 @@ const SideBarButtons = ({
           id="tags-dropdown"
           className={`${
             isDropdownOpen ? "max-h-48" : "max-h-0"
-          } overflow-hidden transition-all duration-300 space-y-1 mt-2`}
+          } overflow-scroll transition-all duration-300 space-y-1 mt-2`}
         >
-          {["Tag1", "Tag2", "Tag3"].map((tag) => (
-            <li key={tag}>
-              <button
-                className={`flex w-full p-2 rounded-lg pl-9 hover:bg-blue-50 transition-all duration-200 ${
-                  isDarkMode ? "text-gray-300" : "dark:text-gray-600"
-                } `}
-              >
-                {tag}
-              </button>
-            </li>
-          ))}
+          {userTags.length > 0 ? (
+            userTags.map((tag) => (
+              <li key={tag.id}>
+                <button
+                  className={`flex w-full p-2 rounded-lg pl-9  transition-all duration-200 ${
+                    isDarkMode
+                      ? "text-gray-300 hover:bg-gray-700"
+                      : "text-gray-600 hover:bg-blue-50"
+                  } `}
+                >
+                  {tag.name}
+                </button>
+              </li>
+            ))
+          ) : (
+            <div>
+              <p className="text-sm italic text-gray-500">No tags found</p>
+            </div>
+          )}
         </ul>
       </li>
 
@@ -104,7 +114,7 @@ const SideBarButtons = ({
           <span className="ms-3 font-medium">Sign Out</span>
         </button>
       </li>
-    </>
+    </div>
   );
 };
 

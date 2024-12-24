@@ -60,9 +60,9 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
 
   return (
     <div
-      className={`relative ${selectedTask ? "hidden ml:block" : "w-screen"} ${
-        selectedTask ? "ml:w-2/5" : "ml:w-4/5"
-      } ${
+      className={`relative overflow-y-scroll ${
+        selectedTask ? "hidden ml:block" : "w-screen"
+      } ${selectedTask ? "ml:w-2/5" : "ml:w-4/5"} ${
         isDarkMode ? "bg-gray-800 text-gray-100" : "bg-white text-gray-900"
       } min-h-screen max-h-fit shadow-lg transition-colors duration-200`}
     >

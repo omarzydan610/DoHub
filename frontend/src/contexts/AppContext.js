@@ -6,7 +6,7 @@ const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(
-    localStorage.getItem("DarkMode")
+    localStorage.getItem("DarkMode") === "true" ? true : false
   );
   const [username, setUsername] = useState(null);
   const [uncompletedTasks, setUncompletedTasks] = useState([]);
