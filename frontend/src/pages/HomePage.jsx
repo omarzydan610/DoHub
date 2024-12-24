@@ -3,9 +3,10 @@ import SideBar from "../components/SideBar";
 import MiddleBar from "../components/MiddleBar";
 import CurrentTask from "../components/CurrentTask";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../contexts/AppContext";
 const HomePage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { isDarkMode, setIsDarkMode } = useAppContext();
 
   const token = localStorage.getItem("x-access-token");
 
@@ -17,6 +18,7 @@ const HomePage = () => {
   }, [token, navigate]);
 
   const toggleDarkMode = () => {
+    localStorage.setItem("DarkMode", !isDarkMode);
     setIsDarkMode(!isDarkMode);
   };
 

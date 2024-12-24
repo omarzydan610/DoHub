@@ -5,6 +5,9 @@ import TagsService from "../Service/TagsService";
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
+  const [isDarkMode, setIsDarkMode] = useState(
+    localStorage.getItem("DarkMode")
+  );
   const [username, setUsername] = useState(null);
   const [uncompletedTasks, setUncompletedTasks] = useState([]);
 
@@ -76,6 +79,8 @@ export const AppProvider = ({ children }) => {
     selectedTaskTags,
     setSelectedTaskTags,
     getTaskTags,
+    isDarkMode,
+    setIsDarkMode,
   };
 
   return (
