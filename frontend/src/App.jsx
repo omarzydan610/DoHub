@@ -1,4 +1,3 @@
-import "./styles/middlebar.css";
 import Login from "./pages/login";
 import React, { useEffect } from "react";
 import HomePage from "./pages/HomePage";

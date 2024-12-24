@@ -35,7 +35,7 @@ const SideBar = ({
 
   return (
     <div
-      className={`side-bar ml:w-64 ${isDarkMode ? "bg-gray-800" : "bg-white"}`}
+      className={`side-bar ml:w-1/5 ${isDarkMode ? "bg-gray-800" : "bg-white"}`}
     >
       <SideBarToggleButton
         toggleSidebar={toggleSidebar}
@@ -45,14 +45,16 @@ const SideBar = ({
       />
       <aside
         id="sidebar-multi-level-sidebar"
-        className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 z-40  w-64 ml:w-1/5 h-screen transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } ml:translate-x-0`}
         aria-label="Sidebar"
       >
         <div
-          className={`h-full border-r border-gray-200 dark:border-gray-700 ${
-            isDarkMode ? "bg-gray-800" : "bg-white"
+          className={`h-full border-r ${
+            isDarkMode
+              ? "bg-gray-800 border-gray-700"
+              : "bg-white border-gray-200"
           }`}
         >
           <ul className="h-full flex flex-col">
