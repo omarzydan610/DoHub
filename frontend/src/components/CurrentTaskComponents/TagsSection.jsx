@@ -87,6 +87,15 @@ export default function TagsSection({ isDarkMode }) {
       tag.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
       !selectedTaskTags?.find((t) => t.id === tag.id)
   );
+  const handleShowTagInput = () => {
+    setShowTagInput(!showTagInput);
+    setTimeout(() => {
+      containerRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }, 10);
+  };
 
   return (
     <div ref={containerRef}>
@@ -158,7 +167,7 @@ export default function TagsSection({ isDarkMode }) {
             <button
               onClick={() => {
                 setError(null);
-                setShowTagInput(!showTagInput);
+                setShowTagInput(handleShowTagInput);
               }}
               className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                 isDarkMode

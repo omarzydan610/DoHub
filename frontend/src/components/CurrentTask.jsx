@@ -55,7 +55,8 @@ export default function CurrentTask({ isDarkMode }) {
   };
 
   const confirmDelete = async (id) => {
-    if (id === null) {
+
+    if (typeof id !== "number") {
       console.log("Delete Task");
       await TasksService.deleteTask(selectedTask.id);
       setSelectedTask(null);

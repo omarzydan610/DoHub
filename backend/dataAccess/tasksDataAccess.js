@@ -152,6 +152,10 @@ class TasksRepository {
         "DELETE FROM tasks WHERE parent_id = ? ",
         [taskId]
       );
+      [result] = await pool.execute(
+        "DELETE FROM task_tags WHERE task_id = ? ",
+        [taskId]
+      );
       [result] = await pool.execute("DELETE FROM tasks WHERE id = ? ", [
         taskId,
       ]);
