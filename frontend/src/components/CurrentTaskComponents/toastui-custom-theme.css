@@ -85,10 +85,13 @@
 body.light-mode .ProseMirror {
   color: #f3f4f6;
 }
-.toastui-editor-main .toastui-editor-md-vertical-style .toastui-editor {
+.toastui-editor-main-dark-mode
+  .toastui-editor-md-vertical-style
+  .toastui-editor {
   background-color: #1e293b;
 }
-.toastui-editor-main
+.toastui-editor-main-dark-mode
+  .toastui-editor-md-vertical-style
   .toastui-editor-md-vertical-style
   .toastui-editor-md-preview {
   background-color: #1e293b;
