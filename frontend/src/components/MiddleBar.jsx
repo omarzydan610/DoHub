@@ -20,6 +20,7 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
     selectedTask,
     getSubTasks,
     getTaskTags,
+    activeCategory,
   } = useAppContext();
 
   const handleAddTask = async (e) => {
@@ -84,49 +85,52 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
         setShowModal={setShowModal}
         isDarkMode={isDarkMode}
       />
-
-      <div
-        className={`middle-bar p-6 overflow-auto custom-scrollbar relative z-10 transition-all duration-300 ${
-          isSidebarOpen ? "opacity-50" : "opacity-100"
-        }`}
-      >
-        <div className="flex justify-between items-center mb-6">
-          <h2
-            className={`text-2xl font-bold ${
-              isDarkMode ? "text-gray-100" : "text-gray-900"
+      {activeCategory === "My List" && (
+        <>
+          <div
+            className={`middle-bar p-6 overflow-auto custom-scrollbar relative z-10 transition-all duration-300 ${
+              isSidebarOpen ? "opacity-50" : "opacity-100"
             }`}
           >
-            Tasks
-          </h2>
-          <button
-            onClick={() => setShowModal(true)}
-            className={`w-10 h-10 flex items-center justify-center ${
-              isDarkMode
-                ? "bg-blue-600 hover:bg-blue-700"
-                : "bg-blue-500 hover:bg-blue-600"
-            } text-white rounded-full shadow-md transition-colors duration-200`}
-          >
-            <span className="text-xl">+</span>
-          </button>
-        </div>
+            <div className="flex justify-between items-center mb-6">
+              <h2
+                className={`text-2xl font-bold ${
+                  isDarkMode ? "text-gray-100" : "text-gray-900"
+                }`}
+              >
+                Tasks
+              </h2>
+              <button
+                onClick={() => setShowModal(true)}
+                className={`w-10 h-10 flex items-center justify-center ${
+                  isDarkMode
+                    ? "bg-blue-600 hover:bg-blue-700"
+                    : "bg-blue-500 hover:bg-blue-600"
+                } text-white rounded-full shadow-md transition-colors duration-200`}
+              >
+                <span className="text-xl">+</span>
+              </button>
+            </div>
 
-        <TaskList
-          tasks={uncompletedTasks}
-          title="Uncompleted Tasks"
-          selectedTask={selectedTask}
-          handleTaskClick={handleTaskClick}
-          handleToggleCompletion={handleToggleCompletion}
-          isDarkMode={isDarkMode}
-        />
-        <TaskList
-          tasks={completedTasks}
-          title="Completed Tasks"
-          selectedTask={selectedTask}
-          handleTaskClick={handleTaskClick}
-          handleToggleCompletion={handleToggleCompletion}
-          isDarkMode={isDarkMode}
-        />
-      </div>
+            <TaskList
+              tasks={uncompletedTasks}
+              title="Uncompleted Tasks"
+              selectedTask={selectedTask}
+              handleTaskClick={handleTaskClick}
+              handleToggleCompletion={handleToggleCompletion}
+              isDarkMode={isDarkMode}
+            />
+            <TaskList
+              tasks={completedTasks}
+              title="Completed Tasks"
+              selectedTask={selectedTask}
+              handleTaskClick={handleTaskClick}
+              handleToggleCompletion={handleToggleCompletion}
+              isDarkMode={isDarkMode}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }

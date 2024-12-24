@@ -16,6 +16,7 @@ export const AppProvider = ({ children }) => {
   const [subtasks, setSubtasks] = useState([]);
   const [userTags, setUserTags] = useState([]);
   const [selectedTaskTags, setSelectedTaskTags] = useState([]);
+  const [activeCategory, setActiveCategory] = useState("My List");
   const getUnCompletedTasks = async () => {
     const response = await TasksService.getUncompletedTasks();
     setUncompletedTasks(response.data);
@@ -81,6 +82,8 @@ export const AppProvider = ({ children }) => {
     getTaskTags,
     isDarkMode,
     setIsDarkMode,
+    activeCategory,
+    setActiveCategory,
   };
 
   return (

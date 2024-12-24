@@ -8,17 +8,32 @@ const SideBarButtons = ({
   toggleDarkMode,
   isDarkMode,
 }) => {
+  const { userTags, activeCategory, setActiveCategory } = useAppContext();
+  const notSelected = isDarkMode
+    ? "text-gray-200 bg-gray-800 hover:bg-gray-700"
+    : "text-gray-700 bg-white hover:bg-blue-50";
+
   const sidebarButtonClass =
-    "flex items-center w-full p-2 rounded-lg hover:bg-blue-50 transition-all duration-200 " +
-    (isDarkMode
-      ? "text-gray-200 bg-gray-800 hover:bg-gray-700"
-      : "text-gray-700 bg-white hover:bg-blue-50");
-  const { userTags } = useAppContext();
+    "flex items-center w-full p-2 rounded-lg transition-all duration-200 ";
+
+  const handleChangeCategory = (category) => {
+    setActiveCategory(category);
+  };
 
   return (
     <div>
-      <li className="px-3 py-2">
-        <button className={sidebarButtonClass} aria-label="My List">
+      <li className={"px-3 py-2"}>
+        <button
+          className={` ${sidebarButtonClass} ${
+            activeCategory === "My List"
+              ? isDarkMode
+                ? "bg-gray-700 text-white"
+                : "bg-blue-50"
+              : `${notSelected}`
+          }`}
+          aria-label="My List"
+          onClick={() => handleChangeCategory("My List")}
+        >
           <FaList className="w-5 h-5 text-blue-500" />
           <span className="ms-3 font-medium">My List</span>
         </button>
@@ -27,7 +42,7 @@ const SideBarButtons = ({
       <li className="px-3 py-2">
         <button
           type="button"
-          className={`${sidebarButtonClass} justify-between`}
+          className={`${sidebarButtonClass} ${notSelected} justify-between`}
           onClick={toggleDropdown}
           aria-expanded={isDropdownOpen}
           aria-controls="tags-dropdown"
@@ -53,18 +68,21 @@ const SideBarButtons = ({
         <ul
           id="tags-dropdown"
           className={`${
-            isDropdownOpen ? "max-h-48" : "max-h-0"
+            isDropdownOpen ? "max-h-44" : "max-h-0"
           } overflow-scroll transition-all duration-300 space-y-1 mt-2`}
         >
           {userTags.length > 0 ? (
             userTags.map((tag) => (
               <li key={tag.id}>
                 <button
-                  className={`flex w-full p-2 rounded-lg pl-9  transition-all duration-200 ${
-                    isDarkMode
-                      ? "text-gray-300 hover:bg-gray-700"
-                      : "text-gray-600 hover:bg-blue-50"
-                  } `}
+                  className={`pl-6 ${sidebarButtonClass} ${
+                    activeCategory === tag.name
+                      ? isDarkMode
+                        ? "bg-gray-700 text-white"
+                        : "bg-blue-50"
+                      : `${notSelected}`
+                  }`}
+                  onClick={() => handleChangeCategory(`${tag.name}`)}
                 >
                   {tag.name}
                 </button>
@@ -98,7 +116,17 @@ const SideBarButtons = ({
       </li>
 
       <li className="px-3 py-2">
-        <button className={sidebarButtonClass} aria-label="Calendar">
+        <button
+          className={`${sidebarButtonClass} ${
+            activeCategory === "Calendar"
+              ? isDarkMode
+                ? "bg-gray-700 text-white"
+                : "bg-blue-50"
+              : `${notSelected}`
+          }`}
+          aria-label="Calendar"
+          onClick={() => handleChangeCategory("Calendar")}
+        >
           <FaCalendar className="w-5 h-5 text-blue-500" />
           <span className="ms-3 font-medium">Calendar</span>
         </button>
