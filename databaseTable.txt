@@ -10,6 +10,8 @@ CREATE TABLE users (
 -- Create the tag table
 CREATE TABLE tags (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     name VARCHAR(255) NOT NULL
 );
 

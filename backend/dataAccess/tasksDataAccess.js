@@ -201,18 +201,66 @@ class TasksRepository {
     }
   }
 
-  // static async getTasksByTag(userId, tagId) {
-  //   try {
-  //     const [tasks] = await pool.execute(
-  //       "SELECT * FROM tasks WHERE user_id = ? AND tag_id = ?",
-  //       [userId, tagId]
-  //     );
+  static async createTag(tagData, userId) {
+    const { name } = tagData;
+    try {
+      const [result] = await pool.execute(
+        "INSERT INTO tags (name, user_id) VALUES (?, ?)",
+        [name, userId]
+      );
+      return result;
+    } catch (error) {
+      throw new AppError(error.message, 400);
+    }
+  }
 
-  //     return tasks;
-  //   } catch (error) {
-  //     throw new AppError(error.message, 404);
-  //   }
-  // }
+  static async deleteTag(tagId, userId) {
+    try {
+      const [result] = await pool.execute(
+        "DELETE FROM tags WHERE id = ? AND user_id = ?",
+        [tagId, userId]
+      );
+      return result;
+    } catch (error) {
+      throw new AppError(error.message, 400);
+    }
+  }
+
+  static async getUserTags(userId) {
+    try {
+      const [result] = await pool.execute(
+        "SELECT * FROM tags WHERE user_id = ?",
+        [userId]
+      );
+      return result;
+    } catch (error) {
+      throw new AppError(error.message, 400);
+    }
+  }
+
+  static async addTagToTask(taskId, tagId) {
+    try {
+      const [result] = await pool.execute(
+        "INSERT INTO task_tags (task_id, tag_id) VALUES (?, ?)",
+        [taskId, tagId]
+      );
+      return result;
+    } catch (error) {
+      throw new AppError(error.message, 400);
+    }
+  }
+
+  static async removeTagFromTask(taskId, tagId) {
+    try {
+      const [result] = await pool.execute(
+        "DELETE FROM task_tags WHERE task_id = ? AND tag_id = ?",
+        [taskId, tagId]
+      );
+      return result;
+    } catch (error) {
+      throw new AppError(error.message, 400);
+    }
+  }
 }
 
 module.exports = TasksRepository;
