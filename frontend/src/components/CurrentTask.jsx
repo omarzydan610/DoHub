@@ -10,6 +10,7 @@ import SubtaskList from "./CurrentTaskComponents/SubtaskList";
 import DeleteModal from "./CurrentTaskComponents/DeleteModal";
 import AddSubtaskModal from "./CurrentTaskComponents/AddSubtaskModal";
 import EditTaskInfoModal from "./CurrentTaskComponents/EditTaskInfoModal";
+import TagsSection from "./CurrentTaskComponents/TagsSection";
 
 import "react-quill/dist/quill.snow.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
@@ -187,6 +188,8 @@ export default function CurrentTask({ isDarkMode }) {
         onDeleteSubtask={confirmDelete}
         isDarkMode={isDarkMode}
       />
+
+      <TagsSection isDarkMode={isDarkMode} />
 
       {/* Modals */}
       <DeleteModal

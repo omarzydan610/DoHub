@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import UserService from "../Service/UserService";
 import TasksService from "../Service/TasksService";
+import TagsService from "../Service/TagsService";
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
@@ -10,7 +11,8 @@ export const AppProvider = ({ children }) => {
   const [completedTasks, setCompletedTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
   const [subtasks, setSubtasks] = useState([]);
-
+  const [userTags, setUserTags] = useState([]);
+  const [selectedTaskTags, setSelectedTaskTags] = useState([]);
   const getUnCompletedTasks = async () => {
     const response = await TasksService.getUncompletedTasks();
     setUncompletedTasks(response.data);
@@ -31,11 +33,24 @@ export const AppProvider = ({ children }) => {
     setUsername(response);
   };
 
+  const getUserTags = async () => {
+    const response = await TagsService.getUserTags();
+    console.log(response.data);
+    setUserTags(response.data);
+  };
+
+  const getTaskTags = async (taskId) => {
+    const response = await TagsService.getTagsByTaskId(taskId);
+    console.log("tasktags", response.data);
+    setSelectedTaskTags(response.data);
+  };
+
   useEffect(
     () => async () => {
       if (localStorage.getItem("x-access-token")) {
         await getUnCompletedTasks();
         await getCompletedTasks();
+        await getUserTags();
       }
     },
     [username]
@@ -55,6 +70,12 @@ export const AppProvider = ({ children }) => {
     subtasks,
     setSubtasks,
     getSubTasks,
+    userTags,
+    setUserTags,
+    getUserTags,
+    selectedTaskTags,
+    setSelectedTaskTags,
+    getTaskTags,
   };
 
   return (

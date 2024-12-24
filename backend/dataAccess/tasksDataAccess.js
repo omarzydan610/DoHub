@@ -201,12 +201,11 @@ class TasksRepository {
     }
   }
 
-  static async createTag(tagData, userId) {
-    const { name } = tagData;
+  static async createTag(tagName, userId) {
     try {
       const [result] = await pool.execute(
         "INSERT INTO tags (name, user_id) VALUES (?, ?)",
-        [name, userId]
+        [tagName, userId]
       );
       return result;
     } catch (error) {
@@ -233,6 +232,28 @@ class TasksRepository {
         [userId]
       );
       return result;
+    } catch (error) {
+      throw new AppError(error.message, 400);
+    }
+  }
+
+  static async getTagsByTaskId(taskId) {
+    try {
+      const [tagsResult] = await pool.execute(
+        "SELECT tag_id FROM task_tags WHERE task_id = ?",
+        [taskId]
+      );
+
+      if (tagsResult.length === 0) {
+        return [];
+      }
+
+      const tagIds = tagsResult.map((row) => row.tag_id);
+      const [tags] = await pool.execute(
+        `SELECT * FROM tags WHERE id IN (${tagIds.map(() => "?").join(",")})`,
+        tagIds
+      );
+      return tags;
     } catch (error) {
       throw new AppError(error.message, 400);
     }

@@ -4,10 +4,11 @@ const jwt = require("jsonwebtoken");
 class TagsController {
   static async createTag(req, res, next) {
     const token = req.headers["authorization"];
+    const tag = req.params.tag;
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const userId = decoded.id;
-      const newTag = await TasksRepository.createTag(req.body, userId);
+      const newTag = await TasksRepository.createTag(tag, userId);
       console.log(newTag);
       res.status(201).json({
         status: "success",
@@ -40,6 +41,20 @@ class TagsController {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const userId = decoded.id;
       const tags = await TasksRepository.getUserTags(userId);
+      res.status(200).json({
+        status: "success",
+        data: tags,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  static async getTagsByTaskId(req, res, next) {
+    const token = req.headers["authorization"];
+    const taskId = req.params.taskId;
+    try {
+      jwt.verify(token, process.env.JWT_SECRET);
+      const tags = await TasksRepository.getTagsByTaskId(taskId);
       res.status(200).json({
         status: "success",
         data: tags,

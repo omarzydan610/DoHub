@@ -19,6 +19,7 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
     setSelectedTask,
     selectedTask,
     getSubTasks,
+    getTaskTags,
   } = useAppContext();
 
   const handleAddTask = async (e) => {
@@ -53,6 +54,7 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
     } else {
       setSelectedTask(task);
       await getSubTasks(task.id);
+      await getTaskTags(task.id);
     }
   };
 

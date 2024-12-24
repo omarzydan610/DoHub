@@ -4,11 +4,16 @@ const API_BASE_URL = "http://localhost:8081";
 
 class TagsService {
   static addTag = async (tag) => {
-    const response = await axios.post(`${API_BASE_URL}/tags/`, tag, {
-      headers: {
-        authorization: localStorage.getItem("x-access-token"),
-      },
-    });
+    console.log();
+    const response = await axios.post(
+      `${API_BASE_URL}/tags/${tag}`,
+      {},
+      {
+        headers: {
+          authorization: localStorage.getItem("x-access-token"),
+        },
+      }
+    );
     return response.data;
   };
 
@@ -20,7 +25,7 @@ class TagsService {
     });
   };
 
-  static getTags = async () => {
+  static getUserTags = async () => {
     const response = await axios.get(`${API_BASE_URL}/tags/`, {
       headers: {
         authorization: localStorage.getItem("x-access-token"),
@@ -29,8 +34,17 @@ class TagsService {
     return response.data;
   };
 
+  static getTagsByTaskId = async (taskId) => {
+    const response = await axios.get(`${API_BASE_URL}/tags/${taskId}`, {
+      headers: {
+        authorization: localStorage.getItem("x-access-token"),
+      },
+    });
+    return response.data;
+  };
+
   static addTagToTask = async (taskId, tagId) => {
-    await axios.post(`${API_BASE_URL}/tags/addTag/${taskId}/${tagId}`, {
+    await axios.post(`${API_BASE_URL}/tags/addTag/${taskId}/${tagId}`,{}, {
       headers: {
         authorization: localStorage.getItem("x-access-token"),
       },
