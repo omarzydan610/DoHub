@@ -16,7 +16,7 @@ const App = () => {
   }, [location]);
 
   return (
-    <div className="App">
+    <div className="App ">
       <Routes>
         <Route
           path="/"

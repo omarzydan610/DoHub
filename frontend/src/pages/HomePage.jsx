@@ -28,23 +28,25 @@ const HomePage = () => {
     }
   }, [token, navigate]);
   return (
-    <div
-      className={`list-screen h-full w-full flex ${
-        isDarkMode ? "bg-gray-700" : "bg-gray-50"
-      }`}
-    >
-      <SideBar
-        isSidebarOpen={isSidebarOpen}
-        setSidebarOpen={setSidebarOpen}
-        isDarkMode={isDarkMode}
-        toggleDarkMode={toggleDarkMode}
-      />
-      <MiddleBar
-        isSidebarOpen={isSidebarOpen}
-        setSidebarOpen={setSidebarOpen}
-        isDarkMode={isDarkMode}
-      />
-      <CurrentTask isDarkMode={isDarkMode} />
+    <div className="w-screen h-screen">
+      <div
+        className={`list-screen h-full w-full flex ${
+          isDarkMode ? "bg-gray-700" : "bg-gray-50"
+        }`}
+      >
+        <SideBar
+          isSidebarOpen={isSidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          isDarkMode={isDarkMode}
+          toggleDarkMode={toggleDarkMode}
+        />
+        <MiddleBar
+          isSidebarOpen={isSidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          isDarkMode={isDarkMode}
+        />
+        <CurrentTask isDarkMode={isDarkMode} />
+      </div>
     </div>
   );
 };
