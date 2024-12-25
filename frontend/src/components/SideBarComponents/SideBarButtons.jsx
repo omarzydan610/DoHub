@@ -9,8 +9,13 @@ const SideBarButtons = ({
   toggleDarkMode,
   isDarkMode,
 }) => {
-  const { userTags, activeCategory, setActiveCategory, setSelectedTagTasks } =
-    useAppContext();
+  const {
+    userTags,
+    activeCategory,
+    setActiveCategory,
+    setSelectedTagTasks,
+    setSelectedTask,
+  } = useAppContext();
   const notSelected = isDarkMode
     ? "text-gray-200 bg-gray-800 hover:bg-gray-700"
     : "text-gray-700 bg-white hover:bg-blue-50";
@@ -19,6 +24,7 @@ const SideBarButtons = ({
     "flex items-center w-full p-2 rounded-lg transition-all duration-200 ";
 
   const handleChangeCategory = async (category, isTag) => {
+    setSelectedTask(null);
     if (isTag) {
       const tagTasks = await TagsService.getTasksByTagId(category.id);
       console.log(tagTasks.data);

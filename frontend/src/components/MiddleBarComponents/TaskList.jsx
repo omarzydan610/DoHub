@@ -43,11 +43,32 @@ const TaskList = ({
               }`}
             >
               <span
-                className={`font-medium ${
+                className={`font-medium w-52 ${
                   isDarkMode ? "text-gray-100" : "text-gray-700"
                 }`}
               >
                 {task.title}
+              </span>
+              <span
+                className={`px-3 h-6 pt-1 rounded-full text-xs hidden mm:block  ${
+                  task.priority === 3
+                    ? isDarkMode
+                      ? "bg-red-900/50 text-red-200"
+                      : "bg-red-100 text-red-700"
+                    : task.priority === 2
+                    ? isDarkMode
+                      ? "bg-amber-900/50 text-amber-200"
+                      : "bg-amber-100 text-amber-700"
+                    : isDarkMode
+                    ? "bg-emerald-900/50 text-emerald-200"
+                    : "bg-emerald-100 text-emerald-700"
+                }`}
+              >
+                {task.priority === 3
+                  ? "High"
+                  : task.priority === 2
+                  ? "Medium"
+                  : "Low"}
               </span>
               <div className="flex items-center space-x-4">
                 <span

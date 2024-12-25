@@ -156,7 +156,7 @@ export default function TagsSection({ isDarkMode }) {
           <div className="flex gap-3">
             <button
               onClick={handleShowTagList}
-              className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+              className={`text-sm xs:text-md px-3 py-1 rounded-lg font-medium transition-all duration-200 ${
                 isDarkMode
                   ? "bg-blue-900/30 text-blue-200 hover:bg-blue-800/50"
                   : "bg-blue-50 text-blue-600 hover:bg-blue-100"
@@ -169,7 +169,7 @@ export default function TagsSection({ isDarkMode }) {
                 setError(null);
                 setShowTagInput(handleShowTagInput);
               }}
-              className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+              className={`text-sm xs:text-md px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                 isDarkMode
                   ? "bg-emerald-900/30 text-emerald-200 hover:bg-emerald-800/50"
                   : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"

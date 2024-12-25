@@ -20,6 +20,8 @@ module.exports = {
       },
       screens: {
         ml: "770px", // Custom small screen breakpoint
+        mm: "550px",
+        xs: "400px",
       },
       fontFamily: {
         body: [

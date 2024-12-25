@@ -85,7 +85,7 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
         selectedTask ? "hidden ml:block" : "w-screen"
       } ${selectedTask ? "ml:w-2/5" : "ml:w-4/5"} ${
         isDarkMode ? "bg-gray-800 text-gray-100" : "bg-white text-gray-900"
-      } min-h-screen max-h-fit shadow-lg transition-colors duration-200`}
+      } min-h-full shadow-lg transition-colors duration-200`}
     >
       {/* Overlay for Sidebar */}
       {isSidebarOpen && (
@@ -189,7 +189,7 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
                 Tasks With Tag: {activeCategory.name}
               </h2>
               <button
-                className="p-3 rounded-lg text-white hover:text-red-600  hover:bg-red-300 transition-colors duration-200 bg-red-600"
+                className="p-3  rounded-lg text-white hover:text-red-600  hover:bg-red-300 transition-colors duration-200 bg-red-600"
                 onClick={DeleteTag}
               >
                 <FaTrash size={20} />

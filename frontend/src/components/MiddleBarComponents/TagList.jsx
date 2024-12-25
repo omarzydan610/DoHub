@@ -16,16 +16,16 @@ const TagList = () => {
         .map((task) => (
           <div
             key={task.id}
-            className={`p-2 mb-2 mx-4 rounded transition-colors
+            className={`p-2 mb-4 h-20  mx-4 rounded transition-colors
             ${
               isDarkMode
                 ? "bg-gray-700 hover:bg-gray-600"
                 : "bg-gray-50 hover:bg-gray-100"
             }`}
           >
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center">
               <div
-                className={`text-lg ${
+                className={`text-lg pb-2 w-40 ${
                   isDarkMode ? "text-white" : "text-gray-900"
                 }`}
               >

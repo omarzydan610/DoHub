@@ -55,7 +55,6 @@ export default function CurrentTask({ isDarkMode }) {
   };
 
   const confirmDelete = async (id) => {
-
     if (typeof id !== "number") {
       console.log("Delete Task");
       await TasksService.deleteTask(selectedTask.id);
@@ -131,7 +130,7 @@ export default function CurrentTask({ isDarkMode }) {
     <div
       className={`overflow-y-scroll ${
         isDarkMode ? "bg-gray-900" : "bg-gray-50"
-      } shadow-lg ${selectedTask ? "block" : "hidden"}
+      } ${selectedTask ? "block" : "hidden"}
       ml:w-2/5 ${selectedTask ? "w-screen" : "hidden"} border-l ${
         isDarkMode ? "border-gray-700" : "border-gray-200"
       } h-screen`}
