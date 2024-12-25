@@ -63,7 +63,7 @@ const Calendar = () => {
               </div>
             </div>
 
-            <div className="">
+            <div>
               {tasksByDate[formatDate(day)]?.map((task) => (
                 <div
                   key={task.id}

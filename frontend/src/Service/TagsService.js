@@ -43,12 +43,25 @@ class TagsService {
     return response.data;
   };
 
-  static addTagToTask = async (taskId, tagId) => {
-    await axios.post(`${API_BASE_URL}/tags/addTag/${taskId}/${tagId}`,{}, {
+  static getTasksByTagId = async (tagId) => {
+    const response = await axios.get(`${API_BASE_URL}/tags/tasks/${tagId}`, {
       headers: {
         authorization: localStorage.getItem("x-access-token"),
       },
     });
+    return response.data;
+  };
+
+  static addTagToTask = async (taskId, tagId) => {
+    await axios.post(
+      `${API_BASE_URL}/tags/addTag/${taskId}/${tagId}`,
+      {},
+      {
+        headers: {
+          authorization: localStorage.getItem("x-access-token"),
+        },
+      }
+    );
   };
 
   static removeTagFromTask = async (taskId, tagId) => {

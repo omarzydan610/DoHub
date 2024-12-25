@@ -23,9 +23,8 @@ class TagsController {
     const token = req.headers["authorization"];
     const tagId = req.params.tagId;
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const userId = decoded.id;
-      const tag = await TasksRepository.deleteTag(tagId, userId);
+      jwt.verify(token, process.env.JWT_SECRET);
+      const tag = await TasksRepository.deleteTag(tagId);
       res.status(200).json({
         status: "success",
         data: tag,
@@ -55,6 +54,21 @@ class TagsController {
     try {
       jwt.verify(token, process.env.JWT_SECRET);
       const tags = await TasksRepository.getTagsByTaskId(taskId);
+      res.status(200).json({
+        status: "success",
+        data: tags,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getTasksByTagId(req, res, next) {
+    const token = req.headers["authorization"];
+    const tagId = req.params.tagId;
+    try {
+      jwt.verify(token, process.env.JWT_SECRET);
+      const tags = await TasksRepository.getTasksByTagId(tagId);
       res.status(200).json({
         status: "success",
         data: tags,

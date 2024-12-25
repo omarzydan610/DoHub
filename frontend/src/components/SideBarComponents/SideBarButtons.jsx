@@ -1,5 +1,6 @@
 import { FaList, FaCalendar, FaSignOutAlt } from "react-icons/fa";
 import { useAppContext } from "../../contexts/AppContext";
+import TagsService from "../../Service/TagsService";
 
 const SideBarButtons = ({
   toggleDropdown,
@@ -8,7 +9,8 @@ const SideBarButtons = ({
   toggleDarkMode,
   isDarkMode,
 }) => {
-  const { userTags, activeCategory, setActiveCategory } = useAppContext();
+  const { userTags, activeCategory, setActiveCategory, setSelectedTagTasks } =
+    useAppContext();
   const notSelected = isDarkMode
     ? "text-gray-200 bg-gray-800 hover:bg-gray-700"
     : "text-gray-700 bg-white hover:bg-blue-50";
@@ -16,8 +18,16 @@ const SideBarButtons = ({
   const sidebarButtonClass =
     "flex items-center w-full p-2 rounded-lg transition-all duration-200 ";
 
-  const handleChangeCategory = (category) => {
-    setActiveCategory(category);
+  const handleChangeCategory = async (category, isTag) => {
+    if (isTag) {
+      const tagTasks = await TagsService.getTasksByTagId(category.id);
+      console.log(tagTasks.data);
+      setSelectedTagTasks(tagTasks.data);
+      setActiveCategory(category);
+    } else {
+      setSelectedTagTasks([]);
+      setActiveCategory(category);
+    }
   };
 
   return (
@@ -76,13 +86,13 @@ const SideBarButtons = ({
               <li key={tag.id}>
                 <button
                   className={`pl-6 ${sidebarButtonClass} ${
-                    activeCategory === tag.name
+                    activeCategory === tag
                       ? isDarkMode
                         ? "bg-gray-700 text-white"
                         : "bg-blue-50"
                       : `${notSelected}`
                   }`}
-                  onClick={() => handleChangeCategory(`${tag.name}`)}
+                  onClick={() => handleChangeCategory(tag, true)}
                 >
                   {tag.name}
                 </button>

@@ -4,6 +4,10 @@ import { useAppContext } from "../contexts/AppContext";
 import AddTaskModal from "./MiddleBarComponents/AddTaskModal";
 import TaskList from "./MiddleBarComponents/TaskList";
 import Calendar from "./MiddleBarComponents/Calender";
+import TagList from "./MiddleBarComponents/TagList.jsx";
+import TagsService from "../Service/TagsService.js";
+import { FaTrash } from "react-icons/fa";
+import DeleteTagModal from "./MiddleBarComponents/DeleteTagModal";
 function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
   const [showModal, setShowModal] = useState(false);
   const [taskDetails, setTaskDetails] = useState({
@@ -21,6 +25,8 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
     getSubTasks,
     getTaskTags,
     activeCategory,
+    setActiveCategory,
+    getUserTags,
   } = useAppContext();
 
   const handleAddTask = async (e) => {
@@ -57,6 +63,20 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
       await getSubTasks(task.id);
       await getTaskTags(task.id);
     }
+  };
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+
+  const DeleteTag = () => {
+    setIsConfirmDeleteOpen(true);
+  };
+  const ConfirmDelete = async () => {
+    await TagsService.deleteTag(activeCategory.id);
+    setActiveCategory("My List");
+    await getUserTags();
+    setIsConfirmDeleteOpen(false);
+  };
+  const CancelDelete = () => {
+    setIsConfirmDeleteOpen(false);
   };
 
   return (
@@ -151,6 +171,41 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
             <Calendar />
           </div>
         </>
+      )}
+
+      {activeCategory !== "Calendar" && activeCategory !== "My List" && (
+        <>
+          <div
+            className={`middle-bar p-6 overflow-auto custom-scrollbar relative z-10 transition-all duration-300 ${
+              isSidebarOpen ? "opacity-50" : "opacity-100"
+            }`}
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h2
+                className={`text-2xl font-bold ${
+                  isDarkMode ? "text-gray-100" : "text-gray-900"
+                }`}
+              >
+                Tasks With Tag: {activeCategory.name}
+              </h2>
+              <button
+                className="p-3 rounded-lg text-white hover:text-red-600  hover:bg-red-300 transition-colors duration-200 bg-red-600"
+                onClick={DeleteTag}
+              >
+                <FaTrash size={20} />
+              </button>
+            </div>
+            <TagList />
+          </div>
+        </>
+      )}
+      {isConfirmDeleteOpen && (
+        <DeleteTagModal
+          isOpen={isConfirmDeleteOpen}
+          onConfirm={ConfirmDelete}
+          onCancel={CancelDelete}
+          isDarkMode={isDarkMode}
+        />
       )}
     </div>
   );

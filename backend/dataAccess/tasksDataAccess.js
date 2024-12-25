@@ -63,7 +63,6 @@ class TasksRepository {
   }
 
   static async editDescription(taskId, newDescription) {
-    // const existingTask = await TasksRepository.getTaskById(taskId);
     const { description = null } = newDescription;
     console.log("new", description);
 
@@ -217,12 +216,13 @@ class TasksRepository {
     }
   }
 
-  static async deleteTag(tagId, userId) {
+  static async deleteTag(tagId) {
     try {
-      const [result] = await pool.execute(
-        "DELETE FROM tags WHERE id = ? AND user_id = ?",
-        [tagId, userId]
+      let [result] = await pool.execute(
+        "DELETE FROM task_tags WHERE tag_id = ? ",
+        [tagId]
       );
+      [result] = await pool.execute("DELETE FROM tags WHERE id = ?", [tagId]);
       return result;
     } catch (error) {
       throw new AppError(error.message, 400);
@@ -258,6 +258,28 @@ class TasksRepository {
         tagIds
       );
       return tags;
+    } catch (error) {
+      throw new AppError(error.message, 400);
+    }
+  }
+
+  static async getTasksByTagId(tagId) {
+    try {
+      const [tasksResult] = await pool.execute(
+        "SELECT task_id FROM task_tags WHERE tag_id = ?",
+        [tagId]
+      );
+
+      if (tasksResult.length === 0) {
+        return [];
+      }
+
+      const taskIds = tasksResult.map((row) => row.task_id);
+      const [tasks] = await pool.execute(
+        `SELECT * FROM tasks WHERE id IN (${taskIds.map(() => "?").join(",")})`,
+        taskIds
+      );
+      return tasks;
     } catch (error) {
       throw new AppError(error.message, 400);
     }
