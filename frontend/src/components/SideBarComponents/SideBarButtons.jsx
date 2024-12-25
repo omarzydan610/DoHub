@@ -151,7 +151,9 @@ const SideBarButtons = ({
       <li className="px-3 py-2 mt-auto">
         <button
           onClick={handleLogOut}
-          className="flex items-center w-full p-2 text-red-600 rounded-lg hover:bg-red-50 transition-all duration-200"
+          className={`flex items-center w-full p-2 text-red-600 rounded-lg ${
+            isDarkMode ? "hover:bg-red-950" : "hover:bg-red-50"
+          } transition-all duration-200`}
           aria-label="Sign Out"
         >
           <FaSignOutAlt className="w-5 h-5" />

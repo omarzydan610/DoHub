@@ -58,6 +58,17 @@ const SideBar = ({
           }`}
         >
           <ul className="h-full flex flex-col">
+            <div className={`text-center py-4 border-b border-opacity-20 ${
+              isDarkMode ? 'border-gray-700' : 'border-gray-200'
+            }`}>
+              <h1 className={`text-2xl font-bold bg-gradient-to-r ${
+                isDarkMode 
+                  ? 'from-blue-400 to-indigo-400' 
+                  : 'from-blue-600 to-indigo-600'
+              } bg-clip-text text-transparent`}>
+                DoHub
+              </h1>
+            </div>
             <SideBarHeader username={username} isDarkMode={isDarkMode} />
             <div className="flex-1 py-4">
               <SideBarButtons
