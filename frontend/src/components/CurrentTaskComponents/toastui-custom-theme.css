@@ -1,0 +1,98 @@
+/* Common styles for both modes */
+.toastui-editor-contents,
+.toastui-editor-md-container textarea {
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.toastui-editor-toolbar {
+  border-bottom: 1px solid #4b5563;
+}
+
+/* Dark mode styles */
+.toastui-editor-dark-mode h1,
+.toastui-editor-dark-mode h2,
+.toastui-editor-dark-mode h3,
+.toastui-editor-dark-mode h4,
+.toastui-editor-dark-mode h5,
+.toastui-editor-dark-mode h6,
+.toastui-editor-dark-mode ul,
+.toastui-editor-dark-mode ol,
+.toastui-editor-dark-mode p,
+.toastui-editor-dark-mode a,
+.toastui-editor-dark-mode code,
+.toastui-editor-dark-mode pre,
+.toastui-editor-dark-mode blockquote,
+.toastui-editor-dark-mode table,
+.toastui-editor-dark-mode th,
+.toastui-editor-dark-mode td {
+  color: #f3f4f6 !important;
+}
+
+.toastui-editor-dark-mode a {
+  color: #60a5fa !important;
+}
+
+.toastui-editor-dark-mode code,
+.toastui-editor-dark-mode pre {
+  background-color: #374151 !important;
+}
+
+.toastui-editor-dark-mode blockquote {
+  border-left: 4px solid #4b5563;
+  padding-left: 10px;
+}
+
+.toastui-editor-dark-mode table {
+  border-collapse: collapse;
+}
+
+.toastui-editor-dark-mode th,
+.toastui-editor-dark-mode td {
+  border: 1px solid #374151;
+  padding: 8px;
+}
+
+.toastui-editor-dark-mode th {
+  background-color: #4b5563;
+}
+
+.toastui-editor-dark-mode .toastui-editor-toolbar {
+  background-color: #374151 !important;
+}
+
+.toastui-editor-dark-mode .toastui-editor-toolbar button:hover {
+  color: #60a5fa !important;
+}
+
+.toastui-editor-dark-mode .toastui-editor-md-container textarea {
+  background-color: #1e293b !important;
+  caret-color: #f3f4f6 !important;
+  border: none !important;
+}
+
+.toastui-editor-dark-mode textarea::-webkit-scrollbar {
+  background-color: #1e293b;
+  width: 8px;
+}
+
+.toastui-editor-dark-mode textarea::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
+  border-radius: 4px;
+}
+
+.toastui-editor-dark-mode .ProseMirror,
+body.light-mode .ProseMirror {
+  color: #f3f4f6;
+}
+.toastui-editor-main-dark-mode
+  .toastui-editor-md-vertical-style
+  .toastui-editor {
+  background-color: #1e293b;
+}
+.toastui-editor-main-dark-mode
+  .toastui-editor-md-vertical-style
+  .toastui-editor-md-vertical-style
+  .toastui-editor-md-preview {
+  background-color: #1e293b;
+}

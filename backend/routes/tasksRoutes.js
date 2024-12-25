@@ -13,6 +13,5 @@ router.get("/subTasks/:parentId", verifyToken, TaskController.getSubTasks);
 router.put("/description/:taskId", verifyToken, TaskController.editDescription);
 router.put("/update/:taskId", verifyToken, TaskController.updateTask);
 
-// router.get("/:taskId", verifyToken, TaskController.getTaskById);
 
 module.exports = router;

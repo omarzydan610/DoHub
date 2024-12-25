@@ -20,6 +20,8 @@ module.exports = {
       },
       screens: {
         ml: "770px", // Custom small screen breakpoint
+        mm: "550px",
+        xs: "400px",
       },
       fontFamily: {
         body: [
@@ -56,6 +58,21 @@ module.exports = {
           "Segoe UI Symbol",
           "Noto Color Emoji",
         ],
+      },
+      animation: {
+        'gradient-x': 'gradient-x 3s ease infinite',
+      },
+      keyframes: {
+        'gradient-x': {
+          '0%, 100%': {
+            'background-size': '200% 200%',
+            'background-position': 'left center'
+          },
+          '50%': {
+            'background-size': '200% 200%',
+            'background-position': 'right center'
+          },
+        },
       },
     },
   },

@@ -137,34 +137,6 @@ class TaskController {
       next(error);
     }
   }
-
-  // static async getTaskById(req, res, next) {
-  //   try {
-  //     const { taskId } = req.params;
-  //     const task = await TasksRepository.getTaskById(taskId);
-  //     res.status(200).json({
-  //       status: "success",
-  //       data: task,
-  //     });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
-
-  // static async getTasksByTag(req, res, next) {
-  //   try {
-  //     const { userId, tagId } = req.params;
-  //     const tasks = await TasksRepository.getTasksByTag(userId, tagId);
-
-  //     res.status(200).json({
-  //       status: "success",
-  //       results: tasks.length,
-  //       data: tasks,
-  //     });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
 }
 
 module.exports = TaskController;

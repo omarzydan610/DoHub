@@ -10,11 +10,12 @@ import SubtaskList from "./CurrentTaskComponents/SubtaskList";
 import DeleteModal from "./CurrentTaskComponents/DeleteModal";
 import AddSubtaskModal from "./CurrentTaskComponents/AddSubtaskModal";
 import EditTaskInfoModal from "./CurrentTaskComponents/EditTaskInfoModal";
+import TagsSection from "./CurrentTaskComponents/TagsSection";
 
 import "react-quill/dist/quill.snow.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 
-export default function TaskEdit() {
+export default function CurrentTask({ isDarkMode }) {
   const editorRef = useRef();
 
   // Calculate completion percentage based on subtasks
@@ -53,13 +54,18 @@ export default function TaskEdit() {
     setIsModalOpen(true);
   };
 
-  const confirmDelete = async () => {
-    console.log("Delete Task");
-    await TasksService.deleteTask(selectedTask.id);
-    setSelectedTask(null);
-    getUnCompletedTasks();
-    getCompletedTasks();
-    setIsModalOpen(false);
+  const confirmDelete = async (id) => {
+    if (typeof id !== "number") {
+      console.log("Delete Task");
+      await TasksService.deleteTask(selectedTask.id);
+      setSelectedTask(null);
+      getUnCompletedTasks();
+      getCompletedTasks();
+      setIsModalOpen(false);
+    } else {
+      await TasksService.deleteTask(id);
+      await getSubTasks(selectedTask.id);
+    }
   };
 
   const cancelDelete = () => {
@@ -122,20 +128,24 @@ export default function TaskEdit() {
 
   return (
     <div
-      className={`bg-white shadow-lg ${selectedTask ? "block" : "hidden"}
-      ml:w-2/5 ${
-        selectedTask ? "w-screen" : "hidden"
-      } bg-slate-50 border-l border-slate-200 h-screen`}
+      className={`overflow-y-scroll ${
+        isDarkMode ? "bg-gray-900" : "bg-gray-50"
+      } ${selectedTask ? "block" : "hidden"}
+      ml:w-2/5 ${selectedTask ? "w-screen" : "hidden"} border-l ${
+        isDarkMode ? "border-gray-700" : "border-gray-200"
+      } h-screen`}
     >
       <TaskHeader
         title={selectedTask?.title}
         onEdit={handleEditTaskInfo}
         onDelete={handleDeleteTask}
+        isDarkMode={isDarkMode}
       />
 
       <TaskMetadata
         deadline={selectedTask?.due_date}
         priority={selectedTask?.priority}
+        isDarkMode={isDarkMode}
       />
 
       <TaskDescription
@@ -143,11 +153,22 @@ export default function TaskEdit() {
         editorRef={editorRef}
         content={selectedTask?.description}
         onEditToggle={handleEditToggle}
+        isDarkMode={isDarkMode}
       />
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-semibold mb-6 px-6">Subtasks</h1>
+        <h1
+          className={`text-2xl font-semibold mb-6 px-6 ${
+            isDarkMode ? "text-gray-100" : "text-gray-800"
+          }`}
+        >
+          Subtasks
+        </h1>
         <button
-          className="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200 flex w-full justify-end px-6 mb-4"
+          className={`font-medium transition-colors duration-200 flex w-full justify-end px-6 mb-4 ${
+            isDarkMode
+              ? "text-blue-400 hover:text-blue-300"
+              : "text-blue-500 hover:text-blue-600"
+          }`}
           onClick={handleAddSubTask}
         >
           + Add Subtask
@@ -155,16 +176,27 @@ export default function TaskEdit() {
       </div>
 
       {subtasks && subtasks.length > 0 && (
-        <TaskProgress completionPercentage={completionPercentage} />
+        <TaskProgress
+          completionPercentage={completionPercentage}
+          isDarkMode={isDarkMode}
+        />
       )}
 
-      <SubtaskList subtasks={subtasks} onToggleCompletion={toggleCompletion} />
+      <SubtaskList
+        subtasks={subtasks}
+        onToggleCompletion={toggleCompletion}
+        onDeleteSubtask={confirmDelete}
+        isDarkMode={isDarkMode}
+      />
+
+      <TagsSection isDarkMode={isDarkMode} />
 
       {/* Modals */}
       <DeleteModal
         isOpen={isModalOpen}
         onConfirm={confirmDelete}
         onCancel={cancelDelete}
+        isDarkMode={isDarkMode}
       />
 
       <AddSubtaskModal
@@ -173,6 +205,7 @@ export default function TaskEdit() {
         onNameChange={setNewSubtaskName}
         onConfirm={confirmAddSubTask}
         onCancel={cancelAddSubTask}
+        isDarkMode={isDarkMode}
       />
 
       <EditTaskInfoModal
@@ -181,6 +214,7 @@ export default function TaskEdit() {
         onTaskChange={setSelectedTask}
         onConfirm={confirmEditTaskInfo}
         onCancel={cancelEditTaskInfo}
+        isDarkMode={isDarkMode}
       />
     </div>
   );

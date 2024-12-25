@@ -1,12 +1,12 @@
 import { React, useState, useEffect } from "react";
 import SideBar from "../components/SideBar";
 import MiddleBar from "../components/MiddleBar";
-import "../styles/listScreen.css";
-import TaskEdit from "../components/CurrentTask";
+import CurrentTask from "../components/CurrentTask";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../contexts/AppContext";
 const HomePage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { isDarkMode, setIsDarkMode } = useAppContext();
 
   const token = localStorage.getItem("x-access-token");
 
@@ -18,8 +18,8 @@ const HomePage = () => {
   }, [token, navigate]);
 
   const toggleDarkMode = () => {
+    localStorage.setItem("DarkMode", !isDarkMode);
     setIsDarkMode(!isDarkMode);
-    // document.documentElement.classList.toggle("dark");
   };
 
   useEffect(() => {
@@ -28,18 +28,25 @@ const HomePage = () => {
     }
   }, [token, navigate]);
   return (
-    <div className="list-screen w-full bg-gray-50">
-      <SideBar
-        isSidebarOpen={isSidebarOpen}
-        setSidebarOpen={setSidebarOpen}
-        isDarkMode={isDarkMode}
-        toggleDarkMode={toggleDarkMode}
-      />
-      <MiddleBar
-        isSidebarOpen={isSidebarOpen}
-        setSidebarOpen={setSidebarOpen}
-      />
-      <TaskEdit />
+    <div className="w-screen h-screen">
+      <div
+        className={`list-screen h-full w-full flex ${
+          isDarkMode ? "bg-gray-700" : "bg-gray-50"
+        }`}
+      >
+        <SideBar
+          isSidebarOpen={isSidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          isDarkMode={isDarkMode}
+          toggleDarkMode={toggleDarkMode}
+        />
+        <MiddleBar
+          isSidebarOpen={isSidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          isDarkMode={isDarkMode}
+        />
+        <CurrentTask isDarkMode={isDarkMode} />
+      </div>
     </div>
   );
 };

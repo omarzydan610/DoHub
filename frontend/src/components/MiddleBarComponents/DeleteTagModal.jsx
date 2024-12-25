@@ -1,9 +1,7 @@
 import React from "react";
 
-export default function AddSubtaskModal({
+export default function DeleteModal({
   isOpen,
-  newSubtaskName,
-  onNameChange,
   onConfirm,
   onCancel,
   isDarkMode,
@@ -11,7 +9,11 @@ export default function AddSubtaskModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm z-50">
+    <div
+      className={`fixed inset-0 flex items-center justify-center ${
+        isDarkMode ? "bg-white/10" : "bg-black/40"
+      } backdrop-blur-sm z-50`}
+    >
       <div
         className={`${
           isDarkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"
@@ -22,19 +24,8 @@ export default function AddSubtaskModal({
             isDarkMode ? "text-gray-100" : "text-slate-800"
           }`}
         >
-          Enter the name of the new subtask:
+          Are you sure you want to delete this Tag?
         </h3>
-        <input
-          type="text"
-          value={newSubtaskName}
-          onChange={(e) => onNameChange(e.target.value)}
-          className={`w-full rounded-lg p-2 mb-4 focus:ring-2 focus:ring-blue-500 outline-none border ${
-            isDarkMode
-              ? "bg-gray-800 border-gray-700 text-gray-100 placeholder-gray-400"
-              : "bg-white border-slate-300 text-gray-900 placeholder-gray-500"
-          }`}
-          placeholder="Subtask name"
-        />
         <div className="flex justify-end space-x-4">
           <button
             onClick={onCancel}
@@ -48,13 +39,9 @@ export default function AddSubtaskModal({
           </button>
           <button
             onClick={onConfirm}
-            className={`px-4 py-2 rounded-lg text-white transition-colors duration-200 ${
-              isDarkMode
-                ? "bg-blue-600 hover:bg-blue-700"
-                : "bg-blue-500 hover:bg-blue-600"
-            }`}
+            className="px-4 py-2 rounded-lg text-white bg-red-500 hover:bg-red-600 transition-colors duration-200"
           >
-            Add Subtask
+            Delete
           </button>
         </div>
       </div>
