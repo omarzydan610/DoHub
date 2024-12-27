@@ -11,6 +11,7 @@ import DeleteModal from "./CurrentTaskComponents/DeleteModal";
 import AddSubtaskModal from "./CurrentTaskComponents/AddSubtaskModal";
 import EditTaskInfoModal from "./CurrentTaskComponents/EditTaskInfoModal";
 import TagsSection from "./CurrentTaskComponents/TagsSection";
+import CollaboratorSection from "./CurrentTaskComponents/CollaboratorSection";
 
 import "react-quill/dist/quill.snow.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
@@ -27,6 +28,8 @@ export default function CurrentTask({ isDarkMode }) {
     subtasks,
     setSubtasks,
     getSubTasks,
+    collaborators,
+    setCollaborators,
   } = useAppContext();
   const completedTasks = subtasks.filter((task) => task.completed).length;
   const totalTasks = subtasks.length;
@@ -37,6 +40,9 @@ export default function CurrentTask({ isDarkMode }) {
   const [newSubtaskName, setNewSubtaskName] = useState(""); // State to hold the new subtask name
   const [isAddSubTaskModalOpen, setIsAddSubTaskModalOpen] = useState(false);
   const [isEditTaskInfoModalOpen, setIsEditTaskInfoModalOpen] = useState(false);
+  const [showCollabDropdown, setShowCollabDropdown] = useState(false);
+  const [newCollabEmail, setNewCollabEmail] = useState("");
+  const [conterbuterError, setConterbuterError] = useState("");
 
   // Toggle completion of a subtask
   const toggleCompletion = async (id) => {
@@ -126,6 +132,20 @@ export default function CurrentTask({ isDarkMode }) {
     setIsEditTaskInfoModalOpen(false);
   };
 
+  const handleAddCollaborator = async () => {
+    if (newCollabEmail.trim() === "") return;
+    console.log(newCollabEmail);
+    try {
+      await TasksService.addCollaborator(selectedTask.id, newCollabEmail);
+      setCollaborators([...collaborators, newCollabEmail]);
+      setNewCollabEmail("");
+      setShowCollabDropdown(false);
+    } catch (err) {
+      console.log(err.data.message);
+      setConterbuterError(err.data.message);
+    }
+  };
+
   return (
     <div
       className={`overflow-y-scroll ${
@@ -139,7 +159,15 @@ export default function CurrentTask({ isDarkMode }) {
         title={selectedTask?.title}
         onEdit={handleEditTaskInfo}
         onDelete={handleDeleteTask}
+        onAddCollaborator={handleAddCollaborator}
         isDarkMode={isDarkMode}
+        handleAddCollaborator={handleAddCollaborator}
+        newCollabEmail={newCollabEmail}
+        setNewCollabEmail={setNewCollabEmail}
+        showCollabDropdown={showCollabDropdown}
+        setShowCollabDropdown={setShowCollabDropdown}
+        conterbuterError={conterbuterError}
+        setConterbuterError={setConterbuterError}
       />
 
       <TaskMetadata
@@ -186,6 +214,10 @@ export default function CurrentTask({ isDarkMode }) {
         subtasks={subtasks}
         onToggleCompletion={toggleCompletion}
         onDeleteSubtask={confirmDelete}
+        isDarkMode={isDarkMode}
+      />
+      <CollaboratorSection
+        collaborators={collaborators}
         isDarkMode={isDarkMode}
       />
 

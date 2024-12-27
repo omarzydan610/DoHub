@@ -3,6 +3,7 @@ const { AppError } = require("../middlewares/errorHandler");
 const { sendEvent } = require("../services/sseService");
 
 class TasksRepository {
+<<<<<<< HEAD
     static async createTask(taskData) {
         sendEvent("task", taskData);
         const { title, description, userId, dueDate, parentId, priority } =
@@ -32,6 +33,44 @@ class TasksRepository {
         } catch (error) {
             throw new AppError(error.message, 400);
         }
+=======
+  static async createTask(taskData) {
+    console.log("taskData", taskData);
+
+    const {
+      title,
+      description,
+      userId,
+      dueDate,
+      parentId,
+      priority,
+      CollaborativeId,
+    } = taskData;
+    console.log(taskData);
+    try {
+      const [result] = await pool.execute(
+        `INSERT INTO tasks 
+    (title, description, user_id, due_date, parent_id, priority,collaborative_id)
+    VALUES (?, ?, ?, ?, ?, ?,?)`,
+        [
+          title ?? null,
+          description ?? null,
+          userId ?? null,
+          dueDate ?? null,
+          parentId ?? null,
+          priority ?? 0,
+          CollaborativeId ?? new Date.now(),
+        ]
+      );
+
+      const [newTask] = await pool.execute("SELECT * FROM tasks WHERE id = ?", [
+        result.insertId,
+      ]);
+
+      return newTask[0];
+    } catch (error) {
+      throw new AppError(error.message, 400);
+>>>>>>> f3396e8dd86c76cad6c3cb9dd0174b85459bd878
     }
 
     static async getAllTasks(userId) {
@@ -320,6 +359,51 @@ class TasksRepository {
             throw new AppError(error.message, 400);
         }
     }
+<<<<<<< HEAD
+=======
+  }
+  static async addCollaborate(taskId, CollaborateEmail) {
+    const [user] = await pool.execute("SELECT * FROM users WHERE email = ?", [
+      CollaborateEmail,
+    ]);
+    console.log("user", user);
+    if (user.length === 0) {
+      throw new AppError("user not found", 404);
+    }
+    let userid = user[0].id;
+    console.log(userid);
+    let task = await this.getTaskById(taskId);
+    let newtask = {
+      title: task.title,
+      description: task.description,
+      completed: task.completed,
+      userId: userid,
+      dueDate: task.due_date,
+      priority: task.priority,
+      CollaborativeId: task.collaborative_id,
+    };
+    console.log("task", task.user_id);
+    task.id = null;
+    task.user_id = 2;
+    await this.createTask(newtask);
+  }
+
+  static async getCollaborators(taskId, userId) {
+    const [task] = await pool.execute("SELECT * FROM tasks WHERE id = ?", [
+      taskId,
+    ]);
+    const collaborative_id = task[0].collaborative_id;
+    console.log(collaborative_id, " ", userId);
+
+    const [collaborators] = await pool.execute(
+      "SELECT * FROM tasks WHERE collaborative_id = ? AND NOT user_id = ?",
+      [collaborative_id, userId]
+    );
+    console.log(collaborators);
+
+    return collaborators;
+  }
+>>>>>>> f3396e8dd86c76cad6c3cb9dd0174b85459bd878
 }
 
 module.exports = TasksRepository;
