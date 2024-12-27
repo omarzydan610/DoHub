@@ -87,6 +87,43 @@ class TasksService {
       },
     });
   };
+
+  static addCollaborator = async (taskId, CollaborateEmail) => {
+    try {
+      const response = await axios.put(
+        `${API_BASE_URL}/tasks/add-collaborator/${taskId}/${CollaborateEmail}`,
+        {},
+        {
+          headers: {
+            authorization: localStorage.getItem("x-access-token"),
+          },
+        }
+      );
+      return response.data;
+    } catch (err) {
+      throw err.response;
+    }
+  };
+
+  static getCollaborators = async (taskId) => {
+    console.log("");
+    console.log("");
+    console.log("");
+    console.log("");
+    console.log("");
+    console.log("");
+    console.log("getCollabor");
+
+    const response = await axios.get(
+      `${API_BASE_URL}/tasks/get-collaborators/${taskId}`,
+      {
+        headers: {
+          authorization: localStorage.getItem("x-access-token"),
+        },
+      }
+    );
+    return response.data;
+  };
 }
 
 export default TasksService;

@@ -3,14 +3,23 @@ const { AppError } = require("../middlewares/errorHandler");
 
 class TasksRepository {
   static async createTask(taskData) {
-    const { title, description, userId, dueDate, parentId, priority } =
-      taskData;
+    console.log("taskData", taskData);
+
+    const {
+      title,
+      description,
+      userId,
+      dueDate,
+      parentId,
+      priority,
+      CollaborativeId,
+    } = taskData;
     console.log(taskData);
     try {
       const [result] = await pool.execute(
         `INSERT INTO tasks 
-    (title, description, user_id, due_date, parent_id, priority)
-    VALUES (?, ?, ?, ?, ?, ?)`,
+    (title, description, user_id, due_date, parent_id, priority,collaborative_id)
+    VALUES (?, ?, ?, ?, ?, ?,?)`,
         [
           title ?? null,
           description ?? null,
@@ -18,6 +27,7 @@ class TasksRepository {
           dueDate ?? null,
           parentId ?? null,
           priority ?? 0,
+          CollaborativeId ?? new Date.now(),
         ]
       );
 
@@ -307,6 +317,47 @@ class TasksRepository {
     } catch (error) {
       throw new AppError(error.message, 400);
     }
+  }
+  static async addCollaborate(taskId, CollaborateEmail) {
+    const [user] = await pool.execute("SELECT * FROM users WHERE email = ?", [
+      CollaborateEmail,
+    ]);
+    console.log("user", user);
+    if (user.length === 0) {
+      throw new AppError("user not found", 404);
+    }
+    let userid = user[0].id;
+    console.log(userid);
+    let task = await this.getTaskById(taskId);
+    let newtask = {
+      title: task.title,
+      description: task.description,
+      completed: task.completed,
+      userId: userid,
+      dueDate: task.due_date,
+      priority: task.priority,
+      CollaborativeId: task.collaborative_id,
+    };
+    console.log("task", task.user_id);
+    task.id = null;
+    task.user_id = 2;
+    await this.createTask(newtask);
+  }
+
+  static async getCollaborators(taskId, userId) {
+    const [task] = await pool.execute("SELECT * FROM tasks WHERE id = ?", [
+      taskId,
+    ]);
+    const collaborative_id = task[0].collaborative_id;
+    console.log(collaborative_id, " ", userId);
+
+    const [collaborators] = await pool.execute(
+      "SELECT * FROM tasks WHERE collaborative_id = ? AND NOT user_id = ?",
+      [collaborative_id, userId]
+    );
+    console.log(collaborators);
+
+    return collaborators;
   }
 }
 

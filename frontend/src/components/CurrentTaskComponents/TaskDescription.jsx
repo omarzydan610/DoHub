@@ -43,7 +43,7 @@ export default function TaskDescription({
             previewStyle="vertical"
             height="500px"
             useCommandShortcut={true}
-            initialEditType="markdown"
+            initialEditType="wysiwyg"
             theme={isDarkMode ? "dark" : "light"}
             className={isDarkMode ? "toastui-editor-dark-mode" : ""}
           />

@@ -137,6 +137,41 @@ class TaskController {
       next(error);
     }
   }
+
+  static async addCollaborate(req, res, next) {
+    const { taskId, CollaborateEmail } = req.params;
+    try {
+      const addCollaborate = await TasksRepository.addCollaborate(
+        taskId,
+        CollaborateEmail
+      );
+      res.status(200).json({
+        status: "success",
+        data: addCollaborate,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getCollaborators(req, res, next) {
+    const token = req.headers["authorization"];
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const userId = decoded.id;
+      const { taskId } = req.params;
+      const getCollaborators = await TasksRepository.getCollaborators(
+        taskId,
+        userId
+      );
+      res.status(201).json({
+        status: "success",
+        data: getCollaborators,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = TaskController;

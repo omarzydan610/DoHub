@@ -18,6 +18,7 @@ export const AppProvider = ({ children }) => {
   const [selectedTaskTags, setSelectedTaskTags] = useState([]);
   const [activeCategory, setActiveCategory] = useState("My List");
   const [selectedTagTasks, setSelectedTagTasks] = useState([]);
+  const [collaborators, setCollaborators] = useState([]);
   const getUnCompletedTasks = async () => {
     const response = await TasksService.getUncompletedTasks();
     setUncompletedTasks(response.data);
@@ -42,6 +43,16 @@ export const AppProvider = ({ children }) => {
     const response = await TagsService.getUserTags();
     console.log(response.data);
     setUserTags(response.data);
+  };
+
+  const getcollaborators = async (taskId) => {
+    try {
+      const response = await TasksService.getCollaborators(taskId);
+      console.log(response.data);
+      setCollaborators(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const getTaskTags = async (taskId) => {
@@ -87,6 +98,9 @@ export const AppProvider = ({ children }) => {
     setActiveCategory,
     selectedTagTasks,
     setSelectedTagTasks,
+    collaborators,
+    setCollaborators,
+    getcollaborators,
   };
 
   return (
