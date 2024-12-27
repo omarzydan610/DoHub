@@ -27,6 +27,7 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
     activeCategory,
     setActiveCategory,
     getUserTags,
+    getcollaborators,
   } = useAppContext();
 
   const handleAddTask = async (e) => {
@@ -62,6 +63,7 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
       setSelectedTask(task);
       await getSubTasks(task.id);
       await getTaskTags(task.id);
+      await getcollaborators(task.id);
     }
   };
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
