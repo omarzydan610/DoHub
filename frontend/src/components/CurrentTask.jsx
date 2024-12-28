@@ -48,7 +48,9 @@ export default function CurrentTask({ isDarkMode }) {
   const toggleCompletion = async (id) => {
     const taskToToggle = subtasks.find((task) => task.id === id);
 
-    await TasksService.toggleTask(id, { completed: !taskToToggle.completed });
+    await TasksService.toggleSubTask(id, {
+      completed: !taskToToggle.completed,
+    });
     setSubtasks(
       subtasks.map((task) =>
         task.id === id ? { ...task, completed: !task.completed } : task
@@ -70,7 +72,7 @@ export default function CurrentTask({ isDarkMode }) {
       setIsModalOpen(false);
     } else {
       await TasksService.deleteTask(id);
-      await getSubTasks(selectedTask.id);
+      await getSubTasks(selectedTask.collaborative_id);
     }
   };
 
@@ -81,7 +83,7 @@ export default function CurrentTask({ isDarkMode }) {
   const handleEditToggle = async () => {
     if (isEditing) {
       const content = editorRef.current.getInstance().getMarkdown();
-      await TasksService.editDescription(selectedTask.id, {
+      await TasksService.editDescription(selectedTask.collaborative_id, {
         description: content,
       });
       if (selectedTask) {
@@ -101,10 +103,10 @@ export default function CurrentTask({ isDarkMode }) {
     if (newSubtaskName) {
       const newSubtask = {
         title: newSubtaskName,
-        parentId: selectedTask.id,
+        parentId: selectedTask.collaborative_id,
       };
       await TasksService.addSubTask(newSubtask);
-      await getSubTasks(selectedTask.id);
+      await getSubTasks(selectedTask.collaborative_id);
     }
     setIsAddSubTaskModalOpen(false);
   };
@@ -118,7 +120,7 @@ export default function CurrentTask({ isDarkMode }) {
   };
 
   const confirmEditTaskInfo = async () => {
-    await TasksService.updateTask(selectedTask.id, {
+    await TasksService.updateTask(selectedTask.collaborative_id, {
       title: selectedTask.title,
       due_date: selectedTask.due_date,
       priority: selectedTask.priority,

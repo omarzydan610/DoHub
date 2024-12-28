@@ -51,13 +51,30 @@ class TasksService {
     return response.data;
   };
 
-  static toggleTask = async (taskId, taskData) => {
+  static toggleTask = async (collaborative_id, taskData) => {
     console.log(taskData);
-    await axios.put(`${API_BASE_URL}/tasks/toggle/${taskId}`, taskData, {
-      headers: {
-        authorization: localStorage.getItem("x-access-token"),
-      },
-    });
+    await axios.put(
+      `${API_BASE_URL}/tasks/toggle/${collaborative_id}`,
+      taskData,
+      {
+        headers: {
+          authorization: localStorage.getItem("x-access-token"),
+        },
+      }
+    );
+  };
+
+  static toggleSubTask = async (taskId, taskData) => {
+    console.log(taskData);
+    await axios.put(
+      `${API_BASE_URL}/tasks/toggle-subtask/${taskId}`,
+      taskData,
+      {
+        headers: {
+          authorization: localStorage.getItem("x-access-token"),
+        },
+      }
+    );
   };
 
   static deleteTask = async (taskId) => {
@@ -68,9 +85,9 @@ class TasksService {
     });
   };
 
-  static editDescription = async (taskId, newDescription) => {
+  static editDescription = async (collaborative_id, newDescription) => {
     const response = await axios.put(
-      `${API_BASE_URL}/tasks/description/${taskId}`,
+      `${API_BASE_URL}/tasks/description/${collaborative_id}`,
       newDescription,
       {
         headers: {
@@ -80,12 +97,16 @@ class TasksService {
     );
     return response.data;
   };
-  static updateTask = async (taskId, taskData) => {
-    await axios.put(`${API_BASE_URL}/tasks/update/${taskId}`, taskData, {
-      headers: {
-        authorization: localStorage.getItem("x-access-token"),
-      },
-    });
+  static updateTask = async (collaborative_id, taskData) => {
+    await axios.put(
+      `${API_BASE_URL}/tasks/update/${collaborative_id}`,
+      taskData,
+      {
+        headers: {
+          authorization: localStorage.getItem("x-access-token"),
+        },
+      }
+    );
   };
 
   static addCollaborator = async (taskId, CollaborateEmail) => {

@@ -5,29 +5,35 @@ const { sendEvent } = require("../services/sseService");
 class TasksRepository {
   static async createTask(taskData) {
     sendEvent("task", taskData);
-    const { title, description, userId, dueDate, parentId, priority } =
-      taskData;
+    const {
+      title,
+      description,
+      userId,
+      dueDate,
+      completed,
+      parentId,
+      priority,
+      CollaborativeId,
+    } = taskData;
     console.log(taskData);
     try {
-      const [result] = await pool.execute(
+      await pool.execute(
         `INSERT INTO tasks 
-    (title, description, user_id, due_date, parent_id, priority)
-    VALUES (?, ?, ?, ?, ?, ?)`,
+      (title, description,completed, user_id, due_date, parent_id, priority,collaborative_id)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           title ?? null,
           description ?? null,
+          completed ?? false,
           userId ?? null,
           dueDate ?? null,
           parentId ?? null,
           priority ?? 0,
+          CollaborativeId ?? new Date().getTime(),
         ]
       );
 
-      const [newTask] = await pool.execute("SELECT * FROM tasks WHERE id = ?", [
-        result.insertId,
-      ]);
       sendEvent("task", taskData);
-      return newTask[0];
     } catch (error) {
       throw new AppError(error.message, 400);
     }
@@ -36,7 +42,7 @@ class TasksRepository {
   static async getAllTasks(userId) {
     try {
       const [tasks] = await pool.execute(
-        "SELECT * FROM tasks WHERE user_id = ?",
+        "SELECT * FROM tasks WHERE user_id = ? AND parent_id IS NULL ORDER BY due_date ASC",
         [userId]
       );
 
@@ -64,7 +70,7 @@ class TasksRepository {
     }
   }
 
-  static async editDescription(taskId, newDescription) {
+  static async editDescription(collaborative_id, newDescription) {
     const { description = null } = newDescription;
     console.log("new", description);
 
@@ -72,57 +78,63 @@ class TasksRepository {
       const [result] = await pool.execute(
         `UPDATE tasks 
         SET  description = ?
-        WHERE id = ?`,
-        [description, taskId]
+        WHERE collaborative_id = ?`,
+        [description, collaborative_id]
       );
 
       if (result.affectedRows === 0) {
         throw new AppError("No task found with that ID", 404);
       }
 
-      const [updatedTask] = await pool.execute(
-        "SELECT * FROM tasks WHERE id = ?",
-        [taskId]
-      );
       sendEvent("task", newDescription);
-      return updatedTask[0];
     } catch (error) {
       throw new AppError(error.message, 400);
     }
   }
 
-  static async updateTask(taskId, taskData) {
+  static async updateTask(collaborative_id, taskData) {
     console.log("data", taskData);
-    const existingTask = await TasksRepository.getTaskById(taskId);
-    taskData = { ...existingTask, ...taskData };
+
     const { title = null, due_date = null, priority = null } = taskData;
 
     try {
-      console.log(taskData);
       const [result] = await pool.execute(
         `UPDATE tasks 
         SET title = ?, due_date = ?, priority = ?
-        WHERE id = ?`,
-        [title, due_date, priority, taskId]
+        WHERE collaborative_id = ?`,
+        [title, due_date, priority, collaborative_id]
       );
 
       if (result.affectedRows === 0) {
         throw new AppError("No task found with that ID", 404);
       }
       sendEvent("task", taskData);
-
-      const [updatedTask] = await pool.execute(
-        "SELECT * FROM tasks WHERE id = ?",
-        [taskId]
-      );
-
-      return updatedTask[0];
     } catch (error) {
       throw new AppError(error.message, 400);
     }
   }
 
-  static async toggleCompleted(taskId, taskData) {
+  static async toggleCompleted(collaborative_id, taskData) {
+    const { completed } = taskData;
+    try {
+      console.log(taskData);
+      const [result] = await pool.execute(
+        `UPDATE tasks 
+        SET completed = ?
+        WHERE collaborative_id = ?`,
+        [completed, collaborative_id]
+      );
+
+      if (result.affectedRows === 0) {
+        throw new AppError("No task found with that ID", 404);
+      }
+      sendEvent("task", taskData);
+    } catch (error) {
+      throw new AppError(error.message, 400);
+    }
+  }
+
+  static async toggleSubtaskCompleted(taskId, taskData) {
     const { completed } = taskData;
     try {
       console.log(taskData);
@@ -136,13 +148,7 @@ class TasksRepository {
       if (result.affectedRows === 0) {
         throw new AppError("No task found with that ID", 404);
       }
-
-      const [updatedTask] = await pool.execute(
-        "SELECT * FROM tasks WHERE id = ?",
-        [taskId]
-      );
       sendEvent("task", taskData);
-      return updatedTask[0];
     } catch (error) {
       throw new AppError(error.message, 400);
     }
@@ -349,7 +355,17 @@ class TasksRepository {
       [collaborative_id, userId]
     );
     console.log(collaborators);
-    return collaborators;
+    const userIds = collaborators.map((collaborator) => collaborator.user_id);
+
+    console.log(userIds);
+    const [users] = await pool.execute(
+      `SELECT * FROM users WHERE id IN (${userIds.map(() => "?").join(",")})`,
+      userIds
+    );
+
+    const emails = users.map((users) => users.email);
+
+    return emails;
   }
 }
 

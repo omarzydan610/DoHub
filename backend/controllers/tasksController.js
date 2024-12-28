@@ -73,11 +73,31 @@ class TaskController {
   }
 
   static async toggleCompleted(req, res, next) {
-    const { taskId } = req.params;
+    const { collaborative_id } = req.params;
     console.log(req.body);
 
     try {
       const updatedTask = await TasksRepository.toggleCompleted(
+        collaborative_id,
+        req.body
+      );
+      console.log(updatedTask);
+
+      res.status(200).json({
+        status: "success",
+        data: updatedTask,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async toggleSubtaskCompleted(req, res, next) {
+    const { taskId } = req.params;
+    console.log(req.body);
+
+    try {
+      const updatedTask = await TasksRepository.toggleSubtaskCompleted(
         taskId,
         req.body
       );
@@ -107,12 +127,12 @@ class TaskController {
   }
 
   static async editDescription(req, res, next) {
-    const { taskId } = req.params;
+    const { collaborative_id } = req.params;
     console.log("body", req.body);
 
     try {
       const editDescription = await TasksRepository.editDescription(
-        taskId,
+        collaborative_id,
         req.body
       );
 
@@ -126,9 +146,12 @@ class TaskController {
   }
 
   static async updateTask(req, res, next) {
-    const { taskId } = req.params;
+    const { collaborative_id } = req.params;
     try {
-      const updatedTask = await TasksRepository.updateTask(taskId, req.body);
+      const updatedTask = await TasksRepository.updateTask(
+        collaborative_id,
+        req.body
+      );
       res.status(200).json({
         status: "success",
         data: updatedTask,

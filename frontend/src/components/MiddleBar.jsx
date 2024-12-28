@@ -49,7 +49,9 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
     } else {
       setSelectedTask(null);
     }
-    await TasksService.toggleTask(task.id, { completed: !task.completed });
+    await TasksService.toggleTask(task.collaborative_id, {
+      completed: !task.completed,
+    });
     await getUnCompletedTasks();
     await getCompletedTasks();
   };
@@ -61,7 +63,7 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
       setSelectedTask(null);
     } else {
       setSelectedTask(task);
-      await getSubTasks(task.id);
+      await getSubTasks(task.collaborative_id);
       await getTaskTags(task.id);
       await getcollaborators(task.id);
     }
