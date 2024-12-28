@@ -44,7 +44,7 @@
 
 ### Collaborative Work
 
-- **Users can add contributers to their tasks and edit them together in real time**
+- **Users can add contributers to their tasks and edit them together in real time using SSE**
 
 ## [Technology Stack](#technology-stack)
 
@@ -57,6 +57,9 @@
 
 - **Node.js**: To handle server-side operations and APIs.
 - **MySQL**: For robust and scalable data storage.
+-  **JWT**: (JSON Web Tokens): Used for secure authentication and session management.
+- **Bcrypt**: Ensures password hashing for enhanced security.
+- **SSE**: (Server Send Event): To realtime collaboration
 
 ## [Getting Started](#getting-started)
 
