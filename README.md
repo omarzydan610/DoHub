@@ -91,6 +91,11 @@
    http://localhost:3000
    ```
 
+## Demo
+
+https://github.com/user-attachments/assets/bc39f705-3ea2-4608-9047-a3cb921a240b
+
+
 ## Screenshots
 
 
@@ -99,3 +104,4 @@
 | ![1735144543410](assets/3.png) | ![1735144543410](assets/4.png) |
 | ![1735144543410](assets/5.png) | ![1735144543410](assets/6.png) |
 | ![1735144543410](assets/7.png) | ![1735144543410](assets/8.png) |
+
