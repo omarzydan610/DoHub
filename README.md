@@ -4,7 +4,15 @@
 
 ![1735144543410](assets/4.png)
 
-## Features
+## Table of Contents
+
+1. [Features](#features)
+2. [Technology Stack](#technology-stack)
+3. [Getting Started](#getting-started)
+4. [Demo](#demo)
+5. [Screenshots](#screenshots)
+
+## [Features](#features)
 
 ### Task Management
 
@@ -34,7 +42,11 @@
 
 - **Mobile and Desktop Friendly**: Enjoy a seamless experience on any device.
 
-## Technology Stack
+### Collaborative Work
+
+- **Users can add contributers to their tasks and edit them together in real time**
+
+## [Technology Stack](#technology-stack)
 
 ### Frontend
 
@@ -46,7 +58,7 @@
 - **Node.js**: To handle server-side operations and APIs.
 - **MySQL**: For robust and scalable data storage.
 
-## Getting Started
+## [Getting Started](#getting-started)
 
 ### Prerequisites
 
@@ -91,17 +103,14 @@
    http://localhost:3000
    ```
 
-## Demo
+## [Demo](#demo)
 
 https://github.com/user-attachments/assets/bc39f705-3ea2-4608-9047-a3cb921a240b
 
-
-## Screenshots
-
+## [Screenshots](#screenshots)
 
 | ![1735144543410](assets/1.png) | ![1735144543410](assets/2.png) |
-| :----------------------------: | ------------------------------ |
+| :--------------------------: | ---------------------------- |
 | ![1735144543410](assets/3.png) | ![1735144543410](assets/4.png) |
 | ![1735144543410](assets/5.png) | ![1735144543410](assets/6.png) |
 | ![1735144543410](assets/7.png) | ![1735144543410](assets/8.png) |
-
