@@ -1,30 +1,27 @@
-const clients = [];
+const clients = new Set();
 
-// Add a new client to the list
 const addClient = (res) => {
-    clients.push(res);
-    console.log(`New client connected. Total clients: ${clients.length}`);
+  clients.add(res);
+  console.log(`Client connected. Total: ${clients.size}`);
 };
 
-// Remove a client on disconnection
 const removeClient = (res) => {
-    const index = clients.indexOf(res);
-    if (index !== -1) {
-        clients.splice(index, 1);
-        console.log(`Client disconnected. Total clients: ${clients.length}`);
-    }
+  clients.delete(res);
+  console.log(`Client disconnected. Total: ${clients.size}`);
 };
 
-// Broadcast an event to all connected clients
 const sendEvent = (event, data) => {
-    clients.forEach((client) => {
-        client.write(`event: ${event}\n`);
-        client.write(`data: ${JSON.stringify(data)}\n\n`);
-    });
+  console.log(`Broadcasting ${event}:`, data);
+  
+  clients.forEach((client) => {
+    try {
+      client.write(`event: ${event}\n`);
+      client.write(`data: ${JSON.stringify(data)}\n\n`);
+    } catch (error) {
+      console.error('Error sending event:', error);
+      removeClient(client);
+    }
+  });
 };
 
-module.exports = {
-    addClient,
-    removeClient,
-    sendEvent,
-};
+module.exports = { addClient, removeClient, sendEvent };

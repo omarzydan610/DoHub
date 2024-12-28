@@ -4,7 +4,6 @@ const { sendEvent } = require("../services/sseService");
 
 class TasksRepository {
   static async createTask(taskData) {
-    sendEvent("task", taskData);
     const {
       title,
       description,
@@ -148,7 +147,7 @@ class TasksRepository {
       if (result.affectedRows === 0) {
         throw new AppError("No task found with that ID", 404);
       }
-      sendEvent("task", taskData);
+      sendEvent("task", { taskData, taskId });
     } catch (error) {
       throw new AppError(error.message, 400);
     }
@@ -170,7 +169,7 @@ class TasksRepository {
       if (result.affectedRows === 0) {
         throw new AppError("No task found with that ID", 404);
       }
-
+      sendEvent("task", taskId);
       return null;
     } catch (error) {
       throw new AppError(error.message, 400);
@@ -312,7 +311,6 @@ class TasksRepository {
         "DELETE FROM task_tags WHERE task_id = ? AND tag_id = ?",
         [taskId, tagId]
       );
-      sendEvent("task", { taskId, tagId });
       return result;
     } catch (error) {
       throw new AppError(error.message, 400);
@@ -343,7 +341,9 @@ class TasksRepository {
     task.id = null;
     task.user_id = 2;
     await this.createTask(newtask);
+    sendEvent("task", taskId);
   }
+
   static async getCollaborators(taskId, userId) {
     const [task] = await pool.execute("SELECT * FROM tasks WHERE id = ?", [
       taskId,

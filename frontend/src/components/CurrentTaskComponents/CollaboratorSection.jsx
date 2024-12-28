@@ -2,7 +2,7 @@ const CollaboratorSection = ({ collaborators, isDarkMode }) => {
   return (
     <div className="px-5">
       <h1
-        className={`text-2xl font-semibold mb-6 ${
+        className={`text-2xl font-semibold my-6 ${
           isDarkMode ? "text-gray-100" : "text-gray-900"
         }`}
       >

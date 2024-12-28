@@ -10,7 +10,7 @@ export const AppProvider = ({ children }) => {
   );
   const [username, setUsername] = useState(null);
   const [uncompletedTasks, setUncompletedTasks] = useState([]);
-
+  const [eventChange, setEventChange] = useState(false);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
   const [subtasks, setSubtasks] = useState([]);
@@ -72,6 +72,57 @@ export const AppProvider = ({ children }) => {
     [username]
   );
 
+  // eslint-disable-next-line no-unused-vars
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    let eventSource;
+
+    const connectSSE = () => {
+      eventSource = new EventSource("http://localhost:8081/sse/events");
+
+      eventSource.onopen = () => {
+        console.log("SSE Connected");
+      };
+
+      eventSource.addEventListener("task", async (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          console.log("Task event received:", data);
+          await getCompletedTasks();
+          await getUnCompletedTasks();
+          setEventChange((prev) => !prev);
+
+          // setSelectedTask(completedTasks.filter(selectedTask.id==))
+          // Handle task updates here
+        } catch (error) {
+          console.error("Error parsing SSE data:", error);
+        }
+      });
+
+      eventSource.onerror = (error) => {
+        console.error("SSE Error:", error);
+        eventSource.close();
+        // Reconnect after 5 seconds
+        setTimeout(connectSSE, 5000);
+      };
+    };
+
+    connectSSE();
+
+    return () => {
+      if (eventSource) {
+        eventSource.close();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (events.length > 0) {
+      console.log(events);
+    }
+  }, [events]);
+
   const contextValue = {
     username,
     getUsername,
@@ -101,6 +152,8 @@ export const AppProvider = ({ children }) => {
     collaborators,
     setCollaborators,
     getcollaborators,
+    eventChange,
+    setEventChange,
   };
 
   return (

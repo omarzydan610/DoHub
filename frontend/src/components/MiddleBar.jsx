@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TasksService from "../Service/TasksService";
 import { useAppContext } from "../contexts/AppContext";
 import AddTaskModal from "./MiddleBarComponents/AddTaskModal";
@@ -28,6 +28,7 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
     setActiveCategory,
     getUserTags,
     getcollaborators,
+    eventChange,
   } = useAppContext();
 
   const handleAddTask = async (e) => {
@@ -63,6 +64,7 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
       setSelectedTask(null);
     } else {
       setSelectedTask(task);
+      console.log(selectedTask);
       await getSubTasks(task.collaborative_id);
       await getTaskTags(task.id);
       await getcollaborators(task.id);
@@ -83,6 +85,31 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
     setIsConfirmDeleteOpen(false);
   };
 
+  useEffect(() => {
+    if (selectedTask) {
+      const id =
+        completedTasks.find((task) => task.id === selectedTask?.id) ??
+        uncompletedTasks.find((task) => task.id === selectedTask?.id);
+
+      // console.log("id", id);
+      setSelectedTask(
+        completedTasks.find((task) => task.id === id.id) ??
+          uncompletedTasks.find((task) => task.id === id.id)
+      );
+
+      console.log(
+        completedTasks.find((task) => task.id === id.id),
+        uncompletedTasks.find((task) => task.id === id.id)
+      );
+
+      console.log("newwwww", selectedTask);
+    }
+  }, [eventChange]);
+
+  useEffect(() => {
+    getSubTasks(selectedTask?.collaborative_id);
+    getcollaborators(selectedTask?.id);
+  }, [selectedTask]);
   return (
     <div
       className={`relative overflow-y-scroll ${

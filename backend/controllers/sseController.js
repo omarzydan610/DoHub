@@ -1,38 +1,40 @@
 const sseCore = require("../services/sseService");
 
-// Handles the SSE connection
 const sseHandler = (req, res) => {
-    res.setHeader("Content-Type", "text/event-stream");
-    res.setHeader("Cache-Control", "no-cache");
-    res.setHeader("Connection", "keep-alive");
+  // Set headers
+  res.writeHead(200, {
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+    Connection: "keep-alive",
+    "Access-Control-Allow-Origin": "*",
+  });
 
-    // Add the client to the list
-    sseCore.addClient(res);
+  // Send initial connection message
+  res.write('data: {"message": "Connected to SSE"}\n\n');
 
-    // Send an initial event to confirm connection
-    res.write(`event: connected\n`);
-    res.write(
-        `data: ${JSON.stringify({ message: "Connected to SSE server" })}\n\n`
-    );
+  // Add heartbeat to prevent timeout
+  const heartbeat = setInterval(() => {
+    res.write(":\n\n"); // Comment line as heartbeat
+  }, 30000);
 
-    // Remove the client on disconnect
-    req.on("close", () => {
-        sseCore.removeClient(res);
-        res.end();
-    });
+  // Add client to SSE core
+  sseCore.addClient(res);
+
+  // Handle client disconnect
+  req.on("close", () => {
+    clearInterval(heartbeat);
+    sseCore.removeClient(res);
+  });
 };
 
-// Sends an event from another endpoint
 const triggerEvent = (req, res) => {
-    const { event, message } = req.body;
+  const { event, message } = req.body;
+  if (!event || !message) {
+    return res.status(400).json({ error: "Event and message are required" });
+  }
 
-    // Use the core to broadcast the event
-    sseCore.sendEvent(event || "message", { message });
-
-    res.json({ success: true, message: "Event broadcasted" });
+  sseCore.sendEvent(event, { message, timestamp: new Date().toISOString() });
+  res.json({ success: true, message: "Event broadcasted" });
 };
 
-module.exports = {
-    sseHandler,
-    triggerEvent,
-};
+module.exports = { sseHandler, triggerEvent };
