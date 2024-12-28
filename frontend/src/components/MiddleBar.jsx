@@ -104,11 +104,13 @@ function MiddleBar({ isSidebarOpen, setSidebarOpen, isDarkMode }) {
 
       console.log("newwwww", selectedTask);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventChange]);
 
   useEffect(() => {
     getSubTasks(selectedTask?.collaborative_id);
     getcollaborators(selectedTask?.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTask]);
   return (
     <div

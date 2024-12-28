@@ -29,22 +29,12 @@ CREATE TABLE tasks (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT,
-    completed BOOLEAN DEFAULT FALSE,
+    completed BOOLEAN,
     user_id BIGINT NOT NULL,
     due_date DATETIME,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     parent_id BIGINT,
     priority BIGINT,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (parent_id) REFERENCES tasks(id) ON DELETE SET NULL
+    collaborative_id BIGINT,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
-
-select * from users;
-select * from tasks;
-select * from tags;
-select * from task_tags;
-
-drop table users;
-drop table tasks;
-drop table tags;
-drop table task_tags;
